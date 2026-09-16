@@ -16,11 +16,11 @@ website:
           - text: Basis R
             href: presentaties/basis.qmd
           - text: Data in R
-            href: datanalyse.qmd
+            href: presentaties/dataanalyse.qmd
           - text: Grafieken in R
-            href: grafieken.qmd
+            href: presentaties/grafieken.qmd
           - text: Werken met Shiny
-            href: shiny.qmd
+            href: presentaties/shiny.qmd
             
       - text: "Werkende Apps"
         menu:
