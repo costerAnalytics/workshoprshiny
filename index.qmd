@@ -1,0 +1,7 @@
+---
+title: "Website van de R-Shiny Workshop"
+---
+
+## Hoofdpagina
+
+Welkom op de index van de R-shiny workshop. In deze workshop leert u de basisbeginselen van R om daarmee een werkende en interactieve webapp te maken met het  [Shiny](https://shiny.posit.co/) pakket.

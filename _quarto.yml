@@ -1,0 +1,21 @@
+project:
+  type: website
+  output-dir: _site
+
+execute:
+  freeze: auto
+
+website:
+  title: "R-shiny workshop"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - text: "Inhoud workshop"
+        menu:
+          - text: Basis R
+            href: presentaties/basis.qmd
+      - text: "Werkende Apps"
+        menu:
+          - text: "App melkproductie"
+            href: https://dashboard.costeranalytics.nl/productieapp
