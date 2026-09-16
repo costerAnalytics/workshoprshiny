@@ -1,0 +1,37 @@
+[
+  {
+    "objectID": "presentaties/basis.html#quarto",
+    "href": "presentaties/basis.html#quarto",
+    "title": "R Basis",
+    "section": "Quarto",
+    "text": "Quarto\nQuarto enables you to weave together content and executable code into a finished presentation. To learn more about Quarto presentations see https://quarto.org/docs/presentations/."
+  },
+  {
+    "objectID": "presentaties/basis.html#bullets",
+    "href": "presentaties/basis.html#bullets",
+    "title": "R Basis",
+    "section": "Bullets",
+    "text": "Bullets\nWhen you click the Render button a document will be generated that includes:\n\nContent authored with markdown\nOutput from executable code"
+  },
+  {
+    "objectID": "presentaties/basis.html#code",
+    "href": "presentaties/basis.html#code",
+    "title": "R Basis",
+    "section": "Code",
+    "text": "Code\nWhen you click the Render button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:\n\n\n[1] 2"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Website van de R-Shiny Workshop",
+    "section": "",
+    "text": "Welkom op de index van de R-shiny workshop. In deze workshop leert u de basisbeginselen van R om daarmee een werkende en interactieve webapp te maken met het Shiny pakket."
+  },
+  {
+    "objectID": "index.html#hoofdpagina",
+    "href": "index.html#hoofdpagina",
+    "title": "Website van de R-Shiny Workshop",
+    "section": "",
+    "text": "Welkom op de index van de R-shiny workshop. In deze workshop leert u de basisbeginselen van R om daarmee een werkende en interactieve webapp te maken met het Shiny pakket."
+  }
+]
