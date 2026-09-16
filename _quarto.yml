@@ -15,7 +15,17 @@ website:
         menu:
           - text: Basis R
             href: presentaties/basis.qmd
+          - text: Data in R
+            href: datanalyse.qmd
+          - text: Grafieken in R
+            href: grafieken.qmd
+          - text: Werken met Shiny
+            href: shiny.qmd
+            
       - text: "Werkende Apps"
         menu:
           - text: "App melkproductie"
             href: https://dashboard.costeranalytics.nl/productieapp
+          - text: "App plantengroei"
+            href: https://dashboard.costeranalytics.nl/productieapp
+
