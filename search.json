@@ -1,5 +1,61 @@
 [
   {
+    "objectID": "presentaties/grafieken.html#quarto",
+    "href": "presentaties/grafieken.html#quarto",
+    "title": "R Basis",
+    "section": "Quarto",
+    "text": "Quarto\nQuarto enables you to weave together content and executable code into a finished presentation. To learn more about Quarto presentations see https://quarto.org/docs/presentations/."
+  },
+  {
+    "objectID": "presentaties/grafieken.html#bullets",
+    "href": "presentaties/grafieken.html#bullets",
+    "title": "R Basis",
+    "section": "Bullets",
+    "text": "Bullets\nWhen you click the Render button a document will be generated that includes:\n\nContent authored with markdown\nOutput from executable code"
+  },
+  {
+    "objectID": "presentaties/grafieken.html#code",
+    "href": "presentaties/grafieken.html#code",
+    "title": "R Basis",
+    "section": "Code",
+    "text": "Code\nWhen you click the Render button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:\n\n\n[1] 2"
+  },
+  {
+    "objectID": "presentaties/shiny.html#quarto",
+    "href": "presentaties/shiny.html#quarto",
+    "title": "R Basis",
+    "section": "Quarto",
+    "text": "Quarto\nQuarto enables you to weave together content and executable code into a finished presentation. To learn more about Quarto presentations see https://quarto.org/docs/presentations/."
+  },
+  {
+    "objectID": "presentaties/shiny.html#bullets",
+    "href": "presentaties/shiny.html#bullets",
+    "title": "R Basis",
+    "section": "Bullets",
+    "text": "Bullets\nWhen you click the Render button a document will be generated that includes:\n\nContent authored with markdown\nOutput from executable code"
+  },
+  {
+    "objectID": "presentaties/shiny.html#code",
+    "href": "presentaties/shiny.html#code",
+    "title": "R Basis",
+    "section": "Code",
+    "text": "Code\nWhen you click the Render button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:\n\n\n[1] 2"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Website van de R-Shiny Workshop",
+    "section": "",
+    "text": "Welkom op de index van de R-shiny workshop. In deze workshop leert u de basisbeginselen van R om daarmee een werkende en interactieve webapp te maken met het Shiny pakket."
+  },
+  {
+    "objectID": "index.html#hoofdpagina",
+    "href": "index.html#hoofdpagina",
+    "title": "Website van de R-Shiny Workshop",
+    "section": "",
+    "text": "Welkom op de index van de R-shiny workshop. In deze workshop leert u de basisbeginselen van R om daarmee een werkende en interactieve webapp te maken met het Shiny pakket."
+  },
+  {
     "objectID": "presentaties/basis.html#quarto",
     "href": "presentaties/basis.html#quarto",
     "title": "R Basis",
@@ -21,17 +77,24 @@
     "text": "Code\nWhen you click the Render button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:\n\n\n[1] 2"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Website van de R-Shiny Workshop",
-    "section": "",
-    "text": "Welkom op de index van de R-shiny workshop. In deze workshop leert u de basisbeginselen van R om daarmee een werkende en interactieve webapp te maken met het Shiny pakket."
+    "objectID": "presentaties/dataanalyse.html#quarto",
+    "href": "presentaties/dataanalyse.html#quarto",
+    "title": "R Basis",
+    "section": "Quarto",
+    "text": "Quarto\nQuarto enables you to weave together content and executable code into a finished presentation. To learn more about Quarto presentations see https://quarto.org/docs/presentations/."
   },
   {
-    "objectID": "index.html#hoofdpagina",
-    "href": "index.html#hoofdpagina",
-    "title": "Website van de R-Shiny Workshop",
-    "section": "",
-    "text": "Welkom op de index van de R-shiny workshop. In deze workshop leert u de basisbeginselen van R om daarmee een werkende en interactieve webapp te maken met het Shiny pakket."
+    "objectID": "presentaties/dataanalyse.html#bullets",
+    "href": "presentaties/dataanalyse.html#bullets",
+    "title": "R Basis",
+    "section": "Bullets",
+    "text": "Bullets\nWhen you click the Render button a document will be generated that includes:\n\nContent authored with markdown\nOutput from executable code"
+  },
+  {
+    "objectID": "presentaties/dataanalyse.html#code",
+    "href": "presentaties/dataanalyse.html#code",
+    "title": "R Basis",
+    "section": "Code",
+    "text": "Code\nWhen you click the Render button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:\n\n\n[1] 2"
   }
 ]

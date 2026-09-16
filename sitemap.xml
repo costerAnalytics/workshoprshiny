@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://costerAnalytics.github.io/workshoprshiny/presentaties/basis.html</loc>
-    <lastmod>2026-09-16T15:37:57.790Z</lastmod>
+    <loc>https://costerAnalytics.github.io/workshoprshiny/presentaties/grafieken.html</loc>
+    <lastmod>2026-09-16T15:43:04.093Z</lastmod>
+  </url>
+  <url>
+    <loc>https://costerAnalytics.github.io/workshoprshiny/presentaties/shiny.html</loc>
+    <lastmod>2026-09-16T15:43:04.093Z</lastmod>
   </url>
   <url>
     <loc>https://costerAnalytics.github.io/workshoprshiny/index.html</loc>
-    <lastmod>2026-09-16T15:37:57.790Z</lastmod>
+    <lastmod>2026-09-16T15:43:04.092Z</lastmod>
+  </url>
+  <url>
+    <loc>https://costerAnalytics.github.io/workshoprshiny/presentaties/basis.html</loc>
+    <lastmod>2026-09-16T15:43:04.092Z</lastmod>
+  </url>
+  <url>
+    <loc>https://costerAnalytics.github.io/workshoprshiny/presentaties/dataanalyse.html</loc>
+    <lastmod>2026-09-16T15:43:04.093Z</lastmod>
   </url>
 </urlset>
