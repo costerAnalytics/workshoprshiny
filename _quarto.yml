@@ -25,7 +25,7 @@ website:
       - text: "Werkende Apps"
         menu:
           - text: "App melkproductie"
-            href: https://dashboard.costeranalytics.nl/productieapp
+            href: https://dashboard.costeranalytics.nl/wsappproductie/
           - text: "App plantengroei"
-            href: https://dashboard.costeranalytics.nl/productieapp
+            href: https://dashboard.costeranalytics.nl/wsappproductie/
 
