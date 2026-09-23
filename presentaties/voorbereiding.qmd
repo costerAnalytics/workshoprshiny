@@ -1,6 +1,5 @@
 ---
 title: "Voorbereiding"
-author: "Albart Coster"
 format:
   revealjs:
     theme: [default, styles.scss]
