@@ -2,8 +2,13 @@
 title: "Voorbereiding"
 format:
   revealjs:
-    theme: [default, styles.scss]
-    highlight-style: github
+    theme: [default,styles.scss]
+    scrollable: true
+    code-overflow: wrap
+    code-line-numbers: true
+
+revealjs-plugins:
+  - codewindow
 ---
 
 ## Voorbereiding op de Workshop
