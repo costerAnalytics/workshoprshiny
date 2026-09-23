@@ -1,0 +1,14 @@
+---
+title: "Voorbereiding"
+author: "Albart Coster"
+format:
+  revealjs:
+    theme: [default, styles.scss]
+    highlight-style: github
+---
+
+## Voorbereiding op de Workshop
+
+1. Neem een laptop mee
+2. Installeer R, [https://cloud.r-project.org/](https://cloud.r-project.org/)
+3. Installeer Rstudio, de werkomgeving voor R. Let op; selecteer `download rstudio` en niet `download rstudio server`. [https://posit.co/downloads](https://posit.co/downloads)

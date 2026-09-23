@@ -1,0 +1,22 @@
+/*-- scss:defaults --*/
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+$presentation-heading-font: "Josefin Sans", sans-serif;
+$font-family-sans-serif: "Lato", sans-serif;
+$font-family-monospace: "Space Mono", monospace;
+
+$theme-darkblue: #01364C;
+$theme-blue: #99D9DD;
+$theme-white: #F7F8F9;
+$theme-yellow: #F4BA02;
+
+$body-bg: $theme-darkblue;
+$body-color: $theme-white;
+$link-color: $theme-blue;
+
+
+$presentation-font-size-root: 40px;
+$presentation-h1-font-size: 80px;
+$presentation-h2-font-size: 60px;
+$code-block-font-size: 0.9em;
+
+/*-- scss:rules --*/

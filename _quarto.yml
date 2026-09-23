@@ -13,6 +13,8 @@ website:
         text: Home
       - text: "Inhoud workshop"
         menu:
+          - text: Voorbereiding voor de Workshop
+            href: presentaties/voorbereiding.qmd
           - text: Basis R
             href: presentaties/basis.qmd
           - text: Data in R
