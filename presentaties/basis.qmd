@@ -26,13 +26,19 @@ We gebruiken R, maar werken in Rstudio
 De werkmap is de map waarin R als eerste zoekt voor bestanden. Je stelt de werkmap in met de knop `Session/Set Working Directory/To Source File location` (of een andere keus)
 
 
-![Werkmap instellen](beelden/werkmap.png){ width=80% }
+![Werkmap instellen](beelden/werkmap.png){width="80%" height="auto"}
 
 ## Projecten
 
 Het is verstandig om in projecten te werken. In dit geval maken we project `rworkshop`. Bij aanmaken van dit project maakt R een nieuwe map genaamd `rworkshop` aan, en plaatst daar het bestand `rworkshop.Rproj` in. Bij aanklikken van dit bestand opent Rstudio in de juiste werkmap
 
+![Projecten](beelden/project.png){width="80%" height="auto"}
+
+## Bronbestanden
+
 R werkt voor je als je opdrachten die code ingeeft. Deze code kan in de console ingegeven worden, maar het is verstandiger om code in een bronbestand te schrijven. Maak hiervoor een nieuw .R bestand aan in je werkmap. In dit bestand kun je R code schrijven en R kan het bestand vervolgens uitvoeren
+
+![Bronbestanden](beelden/bronbestanden.png)
 
 ## Basisbegrippen in R
 
