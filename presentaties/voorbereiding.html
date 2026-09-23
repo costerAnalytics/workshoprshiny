@@ -6,7 +6,7 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-5a1953863e1f72ef3b996ef827f01ca7.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.10.18">
 
   <title>R-shiny workshop – Voorbereiding</title>
@@ -34,10 +34,11 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-c408ac929ab39ef10f5535a607bd7a96.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-6737a0fb2db09498101b110860bd3293.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-codewindow/codewindow.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
@@ -50,6 +51,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -127,7 +129,7 @@
     }
   </style>
 </head>
-<body class="quarto-dark">
+<body class="quarto-light">
   <div class="reveal">
     <div class="slides">
 
@@ -138,7 +140,7 @@
 </div>
 
 </section>
-<section id="voorbereiding-op-de-workshop" class="slide level2">
+<section id="voorbereiding-op-de-workshop" class="slide level2 scrollable">
 <h2>Voorbereiding op de Workshop</h2>
 <ol type="1">
 <li>Neem een laptop mee</li>
@@ -162,6 +164,7 @@
   <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-codewindow/codewindow.js"></script>
   <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -354,7 +357,7 @@
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealCodewindow, QuartoSupport,
 
           RevealMath,
           RevealNotes,

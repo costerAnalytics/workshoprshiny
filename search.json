@@ -102,14 +102,21 @@
     "href": "presentaties/basis.html#werkmap-en-bronbestanden",
     "title": "R Basis",
     "section": "Werkmap en bronbestanden",
-    "text": "Werkmap en bronbestanden\nDe werkmap is de map waarin R als eerste zoekt voor bestanden. Je stelt de werkmap in met de knop Session/Set Working Directory/To Source File location (of een andere keus)\n\nWerkmap instellenHet is verstandig om in projecten te werken. In dit geval maken we project rworkshop. Bij aanmaken van dit project maakt R een nieuwe map genaamd rworkshop aan, en plaatst daar het bestand rworkshop.Rproj in. Bij aanklikken van dit bestand opent Rstudio in de juiste werkmap\nR werkt voor je als je opdrachten die code ingeeft. Deze code kan in de console ingegeven worden, maar het is verstandiger om code in een bronbestand te schrijven. Maak hiervoor een nieuw .R bestand aan in je werkmap. In dit bestand kun je R code schrijven en R kan het bestand vervolgens uitvoeren"
+    "text": "Werkmap en bronbestanden\nDe werkmap is de map waarin R als eerste zoekt voor bestanden. Je stelt de werkmap in met de knop Session/Set Working Directory/To Source File location (of een andere keus)\n\nWerkmap instellen"
+  },
+  {
+    "objectID": "presentaties/basis.html#projecten",
+    "href": "presentaties/basis.html#projecten",
+    "title": "R Basis",
+    "section": "Projecten",
+    "text": "Projecten\nHet is verstandig om in projecten te werken. In dit geval maken we project rworkshop. Bij aanmaken van dit project maakt R een nieuwe map genaamd rworkshop aan, en plaatst daar het bestand rworkshop.Rproj in. Bij aanklikken van dit bestand opent Rstudio in de juiste werkmap\nR werkt voor je als je opdrachten die code ingeeft. Deze code kan in de console ingegeven worden, maar het is verstandiger om code in een bronbestand te schrijven. Maak hiervoor een nieuw .R bestand aan in je werkmap. In dit bestand kun je R code schrijven en R kan het bestand vervolgens uitvoeren"
   },
   {
     "objectID": "presentaties/basis.html#basisbegrippen-in-r",
     "href": "presentaties/basis.html#basisbegrippen-in-r",
     "title": "R Basis",
     "section": "Basisbegrippen in R",
-    "text": "Basisbegrippen in R\n\nR is case sensitive, hoofdletters en kleine letters maken uit\nR werkt met objecten. We maken objecten met de &lt;- operator, en kunnen met de objecten werken\nObjecten hebben een type: numeric, character, factor:\n\n\na &lt;- 1\nb &lt;- 2\nc &lt;- a + b\nc\n\n[1] 3\n\nd &lt;- a/2\nd\n\n[1] 0.5\n\ne &lt;- a*b + c\ne\n\n[1] 5\n\nnaam &lt;- 'Albart'\nachternaam &lt;- 'Coster'\nvnaam &lt;- paste(naam,achternaam)\nvnaam\n\n[1] \"Albart Coster\"\n\ngeen &lt;- NA"
+    "text": "Basisbegrippen in R\n\nR is case sensitive, hoofdletters en kleine letters maken uit\nR werkt met objecten. We maken objecten met de &lt;- operator, en kunnen met de objecten werken\nObjecten hebben een type: numeric, character, factor:\n\n\ncode.R\n\na &lt;- 1\nb &lt;- 2\nc &lt;- a + b\nc\n\n[1] 3\n\nd &lt;- a/2\nd\n\n[1] 0.5\n\ne &lt;- a*b + c\ne\n\n[1] 5\n\nnaam &lt;- 'Albart'\nachternaam &lt;- 'Coster'\nvnaam &lt;- paste(naam,achternaam)\nvnaam\n\n[1] \"Albart Coster\"\n\ngeen &lt;- NA"
   },
   {
     "objectID": "presentaties/basis.html#datastructuren-in-r",
@@ -123,7 +130,7 @@
     "href": "presentaties/basis.html#functies-in-r",
     "title": "R Basis",
     "section": "Functies in R",
-    "text": "Functies in R\nIn R worden operaties uitgevoerd met code, operators en functies\n\na &lt;- 1 + 2\nb &lt;- a - 2\n\nc &lt;- sum(a,b)\nd &lt;- mean(c(a,b,c))\n\nefunctie &lt;- function(n = 100,min = 0,max = 1){\n  rnum &lt;- runif(n,min = min,max = max)\n  mn &lt;- mean(rnum)\n  sd &lt;- sd(rnum)\n  c(mn,sd)\n}\nefunctie()\n\n[1] 0.5243062 0.2764977\n\nefunctie(1000,0,1000)\n\n[1] 486.8483 286.3345"
+    "text": "Functies in R\nIn R worden operaties uitgevoerd met code, operators en functies\n\na &lt;- 1 + 2\nb &lt;- a - 2\n\nc &lt;- sum(a,b)\nd &lt;- mean(c(a,b,c))\n\nefunctie &lt;- function(n = 100,min = 0,max = 1){\n  rnum &lt;- runif(n,min = min,max = max)\n  mn &lt;- mean(rnum)\n  sd &lt;- sd(rnum)\n  c(mn,sd)\n}\nefunctie()\n\n[1] 0.5222841 0.2976190\n\nefunctie(1000,0,1000)\n\n[1] 492.9561 289.6387"
   },
   {
     "objectID": "presentaties/basis.html#opdrachten",
