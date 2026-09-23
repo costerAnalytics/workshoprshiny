@@ -109,7 +109,14 @@
     "href": "presentaties/basis.html#projecten",
     "title": "R Basis",
     "section": "Projecten",
-    "text": "Projecten\nHet is verstandig om in projecten te werken. In dit geval maken we project rworkshop. Bij aanmaken van dit project maakt R een nieuwe map genaamd rworkshop aan, en plaatst daar het bestand rworkshop.Rproj in. Bij aanklikken van dit bestand opent Rstudio in de juiste werkmap\nR werkt voor je als je opdrachten die code ingeeft. Deze code kan in de console ingegeven worden, maar het is verstandiger om code in een bronbestand te schrijven. Maak hiervoor een nieuw .R bestand aan in je werkmap. In dit bestand kun je R code schrijven en R kan het bestand vervolgens uitvoeren"
+    "text": "Projecten\nHet is verstandig om in projecten te werken. In dit geval maken we project rworkshop. Bij aanmaken van dit project maakt R een nieuwe map genaamd rworkshop aan, en plaatst daar het bestand rworkshop.Rproj in. Bij aanklikken van dit bestand opent Rstudio in de juiste werkmap\n\nProjecten"
+  },
+  {
+    "objectID": "presentaties/basis.html#bronbestanden",
+    "href": "presentaties/basis.html#bronbestanden",
+    "title": "R Basis",
+    "section": "Bronbestanden",
+    "text": "Bronbestanden\nR werkt voor je als je opdrachten die code ingeeft. Deze code kan in de console ingegeven worden, maar het is verstandiger om code in een bronbestand te schrijven. Maak hiervoor een nieuw .R bestand aan in je werkmap. In dit bestand kun je R code schrijven en R kan het bestand vervolgens uitvoeren\n\nBronbestanden"
   },
   {
     "objectID": "presentaties/basis.html#basisbegrippen-in-r",
@@ -130,7 +137,7 @@
     "href": "presentaties/basis.html#functies-in-r",
     "title": "R Basis",
     "section": "Functies in R",
-    "text": "Functies in R\nIn R worden operaties uitgevoerd met code, operators en functies\n\na &lt;- 1 + 2\nb &lt;- a - 2\n\nc &lt;- sum(a,b)\nd &lt;- mean(c(a,b,c))\n\nefunctie &lt;- function(n = 100,min = 0,max = 1){\n  rnum &lt;- runif(n,min = min,max = max)\n  mn &lt;- mean(rnum)\n  sd &lt;- sd(rnum)\n  c(mn,sd)\n}\nefunctie()\n\n[1] 0.5222841 0.2976190\n\nefunctie(1000,0,1000)\n\n[1] 492.9561 289.6387"
+    "text": "Functies in R\nIn R worden operaties uitgevoerd met code, operators en functies\n\na &lt;- 1 + 2\nb &lt;- a - 2\n\nc &lt;- sum(a,b)\nd &lt;- mean(c(a,b,c))\n\nefunctie &lt;- function(n = 100,min = 0,max = 1){\n  rnum &lt;- runif(n,min = min,max = max)\n  mn &lt;- mean(rnum)\n  sd &lt;- sd(rnum)\n  c(mn,sd)\n}\nefunctie()\n\n[1] 0.4802918 0.2710953\n\nefunctie(1000,0,1000)\n\n[1] 494.6627 288.6395"
   },
   {
     "objectID": "presentaties/basis.html#opdrachten",
