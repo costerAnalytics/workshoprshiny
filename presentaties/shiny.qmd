@@ -1,5 +1,5 @@
 ---
-title: "Bouwen van R-Shiny App"
+title: "Bouwen van een R-Shiny App"
 format:
   revealjs:
     theme: [default,styles.scss]
@@ -207,8 +207,8 @@ shinyApp(ui, server)
 
 We willen nu graag selecteren op laktatiedagen en laktatienummer, zodat de grafiek het gemiddelde van de geselecteerde dieren laat zien.
 
-1. We moeten selectieboxen maken voor laktatiedagen en laktatienummer, dit moet in het `ui` object. Om de code mooi te houden maken we eerst een lijst met daarin de twee selecties.
-2. De selectieboxen moeten in een `sidebar` van het dashboard komen, hiervoor gebruiken we functie `sidebar`
+1. We moeten schuifregelaars (*sliders*) maken voor laktatiedagen en laktatienummer, dit moet in het `ui` object. Om de code mooi te houden maken we eerst een lijst met daarin de twee schuifregelaars.
+2. De schuifregelaars moeten in een `sidebar` van het dashboard komen, hiervoor gebruiken we functie `sidebar`
 3. De selectie moet doorwerken in de data, dit gebeurt in de `server` functie
 4. Let op; we *wrappen*/wikkelen de code voor de behandeling van de data in de server functie in een `reactive` functie. Dit moet omdat deze code telkens moet lopen als we de selecties veranderen. Het resultaat van een `reactive` functie is een `reactive` functie, hier moeten we mee werken alsof het een functie is, vandaar `dt()`. Voor achtergrond, lees [Basic Reactivity](https://mastering-shiny.org/basic-reactivity.html).
 
@@ -291,10 +291,9 @@ shinyApp(ui, server)
 
 ## Stap 7: Tabel
 
-1. We willen ook een tabel met daarin de geselecteerde data; hiervoor gebruiken we pakket `DT`
+1. We willen ook een tabel met daarin de geselecteerde data; hiervoor gebruiken we pakket `DT`. Zet `library(DT)` bovenaan `app.R`, bij de andere pakketten
 2. De tabel wordt in de `output` lijst in `server` gezet en we geven hem vervolgens weer in `ui`
 3. De selecties laten we voorlopig voor wat ze zijn
-
 
 ::: {.codewindow .r chrome="windows"}
 code.R
@@ -304,6 +303,8 @@ code.R
 #| output: true
 #| warning: false
 #| eval: false
+
+library(DT)
 
 ui = page_navbar(
   title = 'Analyse productiedata',
@@ -371,9 +372,10 @@ De tabel ziet er niet goed genoeg uit:
 
 1. Hij moet een mooie stijl hebben, we kiezen voor `bootstrap5`
 2. Kolom `datum` moet op een juiste manier weergegeven worden. Hiervoor gebruiken we een aantal functies
-3. De breedte van kolom `datum`  moet aangepast worden omdat het anders niet past. Hiervoor zoeken we eerst het kolomnummer van deze kolom op (`datum_index`), en geven vervolgens aan dat de kolom van deze index breder moet worden en links uitlijnt
+3. De breedte van kolom `datum` moet aangepast worden omdat het anders niet past. Hiervoor zoeken we eerst het kolomnummer van deze kolom op (`datum_index`), en geven vervolgens aan dat de kolom van deze index breder moet worden en links uitlijnt
 4. We willen de rijnummers van de tabel niet meer zien, diernummer voldoet, daarom `rownames=FALSE`
 5. En nog een paar aanpassingen
+6. Vervang in de `server` functie de oude `output$tabel` door de code hieronder. Let op: deze code hoort *binnen* de `server` functie
 
 ::: {.codewindow .r chrome="windows"}
 code.R
@@ -431,12 +433,11 @@ output$tabel <- renderDT({
 
 We willen nu graag een blokje met het aantal geselecteerde dieren en een blokje met het aantal geselecteerde rijen in de data. Verder plaatsen we de `cards` met de grafiek en de tabel, samen met de twee nieuwe blokjes, buiten het `ui` object, zodat het er netter uitziet:
 
-1. We willen de blokjes naast elkaar, daarom moeten we het scherm in 2-en opdelen; dit doen we met functie `layout_column_wrap`.
+1. We willen de blokjes naast elkaar, daarom moeten we het scherm in tweeën delen; dit doen we met functie `layout_column_wrap`.
 2. De blokjes krijgen hun waarde uit een berekening die in `server` wordt uitgevoerd
-3. Het formaat van de blokjes wordt dmv een soort css ingegeven
-4. De `cards` worden nu in het `ui` object geladen, we zetten er `!!!` om de lijst goed uit te pakken
-5. De statistieken voor de blokjes worden in `server` berekend en komen vervolgens in `ui`
-
+3. Het formaat van de tekst in de blokjes geven we op met CSS
+4. De `cards` worden nu in het `ui` object geladen, we zetten er `!!!` voor om de lijst goed uit te pakken
+5. De statistieken voor de blokjes worden in `server` berekend en komen vervolgens in `ui`. Let op: de laatste twee `output$...` regels horen *binnen* de `server` functie
 
 ::: {.codewindow .r chrome="windows"}
 code.R
@@ -502,9 +503,9 @@ output$stat_dieren <- renderText({ n_distinct(dt()$id) })
 ```
 :::
 
-## Stap 10: grote geheel
+## Stap 10: Het grote geheel
 
-We geven nu weer de hele app weer, zodat je het grote geheel niet uit het oog verliest
+We laten nu de hele app zien, zodat je het grote geheel niet uit het oog verliest
 
 ::: {.codewindow .r chrome="windows"}
 code.R
@@ -681,3 +682,656 @@ server = function(input, output, session) {
 shinyApp(ui, server)
 ```
 :::
+
+## Stap 11: selectie van variabelen
+
+De app geeft tot nu toe enkel melkproductie weer, terwijl de dataset ook andere variabelen bevat die we kunnen weergeven. Dit regelen we nu:
+
+1. We maken een lijstje met de variabelen in de dataset die weergegeven kunnen worden
+2. We maken een nieuw selectiemenu, waarin gebruikers één of meer daarvan kunnen kiezen
+3. We zetten de variabelen van de dataset onder elkaar (dus: `id`, `datum`, `lactatie`, `dim`, `kenmerk`, `waarde`), het zogenaamde *lange* formaat. Dit doen we met functie `pivot_longer` uit het pakket `tidyr` bij het maken van de grafiek. Zet daarom `library(tidyr)` bovenaan `app.R`
+4. Bij het maken van de tabel selecteren we ook uit deze kenmerken
+5. Opnieuw laten we enkel de veranderingen zien: `bkv`, `km` en `inputs` komen na het inlezen van de data, en de `server` functie vervangt de oude
+
+::: {.codewindow .r chrome="windows"}
+code.R
+```{r}
+#| label: kenmerken
+#| echo: true
+#| output: true
+#| warning: false
+#| eval: false
+
+library(tidyr)
+
+bkv <- c("datum", "id", "lactatie", "dim", "productie") # lijstje met vaste variabelen
+km <- colnames(data)[-c(1:4)] ## de andere variabelen, kenmerken waaruit we kunnen kiezen
+
+inputs <- list(
+  selectInput(
+    inputId = "kenmerk",
+    label = "Selecteer kenmerk(en)",
+    choices = km,
+    selected = km[1],
+    multiple = TRUE
+  ),
+  sliderInput(
+    inputId = 'lacts',
+    label = "Laktaties:",
+    min = min(data$lactatie, na.rm = TRUE),
+    max = max(data$lactatie, na.rm = TRUE),
+    step = 1,
+    value = c(1, 3)
+  ),
+  sliderInput(
+    inputId = 'dims',
+    label = "Laktatiedagen:",
+    min = min(data$dim, na.rm = TRUE),
+    max = max(data$dim, na.rm = TRUE),
+    step = 1,
+    value = c(1, 365)
+  )
+)
+
+server = function(input, output, session) {
+  dt <- reactive({
+    req(input$lacts, input$dims, input$kenmerk)
+
+    # Dynamisch bepalen welke kolommen we behouden (bkv + geselecteerde kenmerken)
+    geselecteerde_kolommen <- unique(c(bkv, input$kenmerk))
+
+    data |>
+      filter(
+        productie > 0,
+        lactatie >= input$lacts[1],
+        lactatie <= input$lacts[2],
+        dim >= input$dims[1],
+        dim <= input$dims[2]
+      ) |>
+      select(all_of(geselecteerde_kolommen)) ## hier de kolommen die we willen laten zien
+  })
+
+  output$grafiek <- renderPlot({
+    req(dt(), nrow(dt()) > 0)
+
+    # Pivot en bereid data voor de grafiek voor
+    plot_data <- dt() |>
+      pivot_longer(
+        cols = all_of(input$kenmerk),
+        values_to = "waarde",
+        names_to = "kenmerk"
+      ) |>
+      filter(!is.na(waarde), waarde > 0) |>
+      group_by(datum, kenmerk) |>
+      summarise(waarde = mean(waarde, na.rm = TRUE), .groups = "drop")
+    ## hier berekenen we dus gemiddelde per kenmerk per dag
+
+    req(nrow(plot_data) > 0) # geen grafiek als een kenmerk geen waarden heeft
+
+    ggplot(plot_data, aes(x = datum, y = waarde, color = kenmerk, group = kenmerk)) +
+      geom_line(linewidth = 0.8, alpha = 0.8) +
+      geom_point(size = 1.5) +
+      labs(
+        title = 'Groepsgemiddelde over tijd',
+        x = "Datum",
+        y = "Waarde",
+        color = "Kenmerk"
+      ) +
+      # grafieken per kenmerk als er meerdere gekozen zijn
+      facet_wrap(~kenmerk, scales = "free_y")
+  })
+
+  # DataTable output genereren binnen de bslib card
+  output$tabel <- renderDT({
+    req(dt())
+
+    # Zoek de positie van de kolom 'datum' op; DT telt vanaf 0, R vanaf 1
+    datum_index <- which(colnames(dt()) == "datum") - 1
+
+    datatable(
+      dt() |>
+        arrange(id, datum),
+      style = "bootstrap5",
+      fillContainer = TRUE,
+      rownames = FALSE,
+      options = list(
+        pageLength = 10,
+        dom = 'ltp',
+        autoWidth = TRUE, # Verplicht om handmatige breedtes toe te staan
+        columnDefs = list(
+          list(
+            targets = datum_index, # De index van de datumkolom
+            width = '150px',       # Pas dit getal aan om hem breder of smaller te maken
+            className = 'dt-left'  # Zorgt dat de datum netjes links uitlijnt
+          )
+        )
+      )
+    ) |>
+      # Formatteer de datumkolom naar Nederlands formaat (DD-MM-YYYY)
+      formatDate(
+        columns = "datum",
+        method = "toLocaleDateString",
+        params = list(
+          locales = "nl-NL",
+          options = list(
+            year = "numeric",
+            month = "2-digit",
+            day = "2-digit",
+            timeZone = "UTC" # datum is UTC; voorkomt een dag verschuiving in andere tijdzones
+          )
+        )
+      )
+  })
+
+  # Statistiek 1: aantal rijen
+  output$stat_rijen <- renderText({ nrow(dt()) })
+
+  # Statistiek 2: aantal unieke dieren in selectie
+  output$stat_dieren <- renderText({ n_distinct(dt()$id) })
+}
+```
+:::
+
+## Stap 12: selectie van dieren
+
+We willen het ook mogelijk maken om individuele dieren te selecteren.
+
+1. We maken een nieuw selectiemenu, waarin gebruikers één of meer dieren kunnen kiezen
+2. De selectie moet doorwerken in de data: in `dt()` filteren we op de gekozen dieren. Zijn er geen dieren gekozen, dan houden we alle dieren
+3. Als dieren worden gekozen, maken we per dier een lijn en per kenmerk een aparte grafiek. Deze logica bouwen we in de code voor de grafiek
+4. Vervang in de `server` functie `dt()` en `output$grafiek` door de code hieronder
+
+::: {.codewindow .r chrome="windows"}
+code.R
+```{r}
+#| label: dieren
+#| echo: true
+#| output: true
+#| warning: false
+#| eval: false
+
+inputs <- list(
+  selectInput(
+    inputId = "kenmerk",
+    label = "Selecteer kenmerk(en)",
+    choices = km,
+    selected = km[1],
+    multiple = TRUE
+  ),
+  selectInput(
+    inputId = "dieren",
+    label = "Selecteer dier(en)",
+    choices = sort(unique(data$id)),
+    multiple = TRUE
+  ),
+  sliderInput(
+    inputId = 'lacts',
+    label = "Laktaties:",
+    min = min(data$lactatie, na.rm = TRUE),
+    max = max(data$lactatie, na.rm = TRUE),
+    step = 1,
+    value = c(1, 3)
+  ),
+  sliderInput(
+    inputId = 'dims',
+    label = "Laktatiedagen:",
+    min = min(data$dim, na.rm = TRUE),
+    max = max(data$dim, na.rm = TRUE),
+    step = 1,
+    value = c(1, 365)
+  )
+)
+
+dt <- reactive({
+  req(input$lacts, input$dims, input$kenmerk)
+
+  # Dynamisch bepalen welke kolommen we behouden (bkv + geselecteerde kenmerken)
+  geselecteerde_kolommen <- unique(c(bkv, input$kenmerk))
+
+  data |>
+    filter(
+      productie > 0,
+      lactatie >= input$lacts[1],
+      lactatie <= input$lacts[2],
+      dim >= input$dims[1],
+      dim <= input$dims[2],
+      is.null(input$dieren) | id %in% input$dieren # geen dieren gekozen: alle dieren
+    ) |>
+    select(all_of(geselecteerde_kolommen))
+})
+
+output$grafiek <- renderPlot({
+  req(dt(), nrow(dt()) > 0)
+
+  # 1. Pivot en bereid data voor de grafiek voor
+  plot_data <- dt() |>
+    pivot_longer(
+      cols = all_of(input$kenmerk),
+      values_to = "waarde",
+      names_to = "kenmerk"
+    ) |>
+    filter(!is.na(waarde), waarde > 0)
+
+  req(nrow(plot_data) > 0) # geen grafiek als een kenmerk geen waarden heeft
+
+  # 2. Bepaal de logica op basis van wel/geen dierselectie
+  if (is.null(input$dieren)) {
+    # GEEN DIEREN GESELECTEERD -> Bereken groepsgemiddelde per dag
+    plot_data <- plot_data |>
+      group_by(datum, kenmerk) |>
+      summarise(waarde = mean(waarde, na.rm = TRUE), .groups = "drop")
+
+    mapping <- aes(x = datum, y = waarde, color = kenmerk, group = kenmerk)
+    grafiek_titel <- "Groepsgemiddelde over de tijd"
+  } else {
+    # WEL DIEREN GESELECTEERD -> Bereken het gemiddelde PER DIER per dag
+    plot_data <- plot_data |>
+      group_by(id, datum, kenmerk) |>
+      summarise(waarde = mean(waarde, na.rm = TRUE), .groups = "drop")
+
+    mapping <- aes(x = datum, y = waarde, color = id, group = id)
+    grafiek_titel <- "Individueel verloop per geselecteerd dier"
+  }
+
+  # 3. grafiek
+  ggplot(plot_data, mapping) +
+    geom_line(linewidth = 0.8, alpha = 0.8) +
+    geom_point(size = 1.5) +
+    labs(
+      title = grafiek_titel,
+      x = "Datum",
+      y = "Waarde",
+      color = if (is.null(input$dieren)) "Kenmerk" else "Dier ID"
+    ) +
+    # grafieken per kenmerk als er meerdere gekozen zijn
+    facet_wrap(~kenmerk, scales = "free_y")
+})
+```
+:::
+
+## Stap 13: downloadknop
+
+We willen de geselecteerde gegevens ook kunnen downloaden
+
+1. Onder de selectiemenu's verschijnt een knop `download`
+2. In de `server` functie moeten de geselecteerde gegevens (`dt()`) naar de juiste knop worden gestuurd
+
+::: {.codewindow .r chrome="windows"}
+code.R
+```{r}
+#| label: downloadknop
+#| echo: true
+#| output: true
+#| warning: false
+#| eval: false
+
+inputs <- list(
+  selectInput(
+    inputId = "kenmerk",
+    label = "Selecteer kenmerk(en)",
+    choices = km,
+    selected = km[1],
+    multiple = TRUE
+  ),
+  selectInput(
+    inputId = "dieren",
+    label = "Selecteer dier(en)",
+    choices = sort(unique(data$id)),
+    multiple = TRUE
+  ),
+  sliderInput(
+    inputId = 'lacts',
+    label = "Laktaties:",
+    min = min(data$lactatie, na.rm = TRUE),
+    max = max(data$lactatie, na.rm = TRUE),
+    step = 1,
+    value = c(1, 3)
+  ),
+  sliderInput(
+    inputId = 'dims',
+    label = "Laktatiedagen:",
+    min = min(data$dim, na.rm = TRUE),
+    max = max(data$dim, na.rm = TRUE),
+    step = 1,
+    value = c(1, 365)
+  ),
+  hr(),
+  # Downloadknop
+  downloadButton(
+    "download_data",
+    "Download gefilterde data",
+    class = "btn-outline-primary btn-sm w-100"
+  )
+)
+
+server = function(input, output, session) {
+  ## .... de code van de vorige stappen
+
+  # Download handlerfunctionaliteit
+  output$download_data <- downloadHandler(
+    filename = function() {
+      paste("productiedata-export-", Sys.Date(), ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(dt(), file, row.names = FALSE)
+    }
+  )
+}
+```
+:::
+
+## Stap 14: Layout
+
+We willen graag een betere layout.
+
+1. We kiezen een thema `flatly` voor onze app
+2. Dit geven we ook door in de tabel
+3. We kiezen thema `minimal` voor de grafiek
+
+::: {.codewindow .r chrome="windows"}
+code.R
+```{r}
+#| label: beeld
+#| echo: true
+#| output: true
+#| warning: false
+#| eval: false
+
+ui = page_navbar(
+  theme = bs_theme(version = 5, bootswatch = "flatly"),
+  ### ...
+)
+
+# in output$grafiek:
+ggplot(plot_data, mapping) +
+  geom_line(linewidth = 0.8, alpha = 0.8) +
+  geom_point(size = 1.5) +
+  theme_minimal() +
+  labs(
+    title = grafiek_titel,
+    x = "Datum",
+    y = "Waarde",
+    color = if (is.null(input$dieren)) "Kenmerk" else "Dier ID"
+  ) +
+  # grafieken per kenmerk als er meerdere gekozen zijn
+  facet_wrap(~kenmerk, scales = "free_y")
+
+# in output$tabel:
+output$tabel <- renderDT({
+  req(dt())
+
+  # Zoek de positie van de kolom 'datum' op; DT telt vanaf 0, R vanaf 1
+  datum_index <- which(colnames(dt()) == "datum") - 1
+
+  datatable(
+    dt() |>
+      arrange(id, datum),
+    style = "bootstrap5",
+    fillContainer = TRUE,
+    ### ...
+  )
+})
+```
+:::
+
+## Stap 15: opnieuw de hele app
+
+We geven nu opnieuw de hele app weer:
+
+::: {.codewindow .r chrome="windows"}
+code.R
+```{r}
+#| label: hele app2
+#| echo: true
+#| output: true
+#| warning: false
+#| eval: false
+
+library(shiny)
+library(bslib)
+library(dplyr)
+library(tidyr)
+library(lubridate)
+library(ggplot2)
+library(DT)
+
+data <- read.table(
+  'data/productiedata.dat',
+  sep = ",",
+  dec = ".",
+  header = TRUE,
+  row.names = 1, ## eerste kolom is een rijnummer
+  na.strings = "NA"
+) |>
+  rename(vreettijd = Totale.vreettijd.in.minuten) |>
+  rename_with(tolower) |>
+  mutate(datum = ymd(datum)) |> ## zorg dat datum goed staat
+  mutate(id = factor(id)) ## id moet een factor zijn
+
+bkv <- c("datum", "id", "lactatie", "dim", "productie") # lijstje met vaste variabelen
+km <- colnames(data)[-c(1:4)] ## de andere variabelen, kenmerken waaruit we kunnen kiezen
+
+inputs <- list(
+  selectInput(
+    inputId = "kenmerk",
+    label = "Selecteer kenmerk(en)",
+    choices = km,
+    selected = km[1],
+    multiple = TRUE
+  ),
+  selectInput(
+    inputId = "dieren",
+    label = "Selecteer dier(en)",
+    choices = sort(unique(data$id)),
+    multiple = TRUE
+  ),
+  sliderInput(
+    inputId = 'lacts',
+    label = "Laktaties:",
+    min = min(data$lactatie, na.rm = TRUE),
+    max = max(data$lactatie, na.rm = TRUE),
+    step = 1,
+    value = c(1, 3)
+  ),
+  sliderInput(
+    inputId = 'dims',
+    label = "Laktatiedagen:",
+    min = min(data$dim, na.rm = TRUE),
+    max = max(data$dim, na.rm = TRUE),
+    step = 1,
+    value = c(1, 365)
+  ),
+  hr(),
+  # Downloadknop
+  downloadButton(
+    "download_data",
+    "Download gefilterde data",
+    class = "btn-outline-primary btn-sm w-100"
+  )
+)
+
+cards <- list(
+  # Waarde-boxen voor snelle statistieken bovenaan
+  layout_column_wrap(
+    width = 1/2,
+    value_box(
+      title = "Geselecteerde Rijen",
+      value = tags$span(
+        textOutput("stat_rijen"),
+        style = "font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: bold;"
+      ),
+      showcase = shiny::icon("database"),
+      theme = "primary"
+    ),
+    value_box(
+      title = "Geselecteerde Dieren",
+      value = tags$span(
+        textOutput("stat_dieren"),
+        style = "font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: bold;"
+      ),
+      showcase = shiny::icon("cow"),
+      theme = "teal"
+    )
+  ),
+
+  card(
+    full_screen = TRUE,
+    card_header("Kenmerken over de tijd"),
+    card_body(plotOutput("grafiek"))
+  ),
+  card(
+    full_screen = TRUE,
+    card_header("Tabel van de gegevens"),
+    card_body(fillable = TRUE, DTOutput("tabel"))
+  )
+)
+
+ui = page_navbar(
+  theme = bs_theme(version = 5, bootswatch = "flatly"),
+  title = "Analyse productiedata",
+  sidebar = sidebar(inputs),
+
+  nav_panel(
+    title = "Dashboard",
+    !!!cards
+  )
+)
+
+server = function(input, output, session) {
+  dt <- reactive({
+    req(input$lacts, input$dims, input$kenmerk)
+
+    # Dynamisch bepalen welke kolommen we behouden (bkv + geselecteerde kenmerken)
+    geselecteerde_kolommen <- unique(c(bkv, input$kenmerk))
+
+    data |>
+      filter(
+        productie > 0,
+        lactatie >= input$lacts[1],
+        lactatie <= input$lacts[2],
+        dim >= input$dims[1],
+        dim <= input$dims[2],
+        is.null(input$dieren) | id %in% input$dieren # geen dieren gekozen: alle dieren
+      ) |>
+      select(all_of(geselecteerde_kolommen))
+  })
+
+  output$grafiek <- renderPlot({
+    req(dt(), nrow(dt()) > 0)
+
+    # 1. Pivot en bereid data voor de grafiek voor
+    plot_data <- dt() |>
+      pivot_longer(
+        cols = all_of(input$kenmerk),
+        values_to = "waarde",
+        names_to = "kenmerk"
+      ) |>
+      filter(!is.na(waarde), waarde > 0)
+
+    req(nrow(plot_data) > 0) # geen grafiek als een kenmerk geen waarden heeft
+
+    # 2. Bepaal de logica op basis van wel/geen dierselectie
+    if (is.null(input$dieren)) {
+      # GEEN DIEREN GESELECTEERD -> Bereken groepsgemiddelde per dag
+      plot_data <- plot_data |>
+        group_by(datum, kenmerk) |>
+        summarise(waarde = mean(waarde, na.rm = TRUE), .groups = "drop")
+
+      mapping <- aes(x = datum, y = waarde, color = kenmerk, group = kenmerk)
+      grafiek_titel <- "Groepsgemiddelde over de tijd"
+    } else {
+      # WEL DIEREN GESELECTEERD -> Bereken het gemiddelde PER DIER per dag
+      plot_data <- plot_data |>
+        group_by(id, datum, kenmerk) |>
+        summarise(waarde = mean(waarde, na.rm = TRUE), .groups = "drop")
+
+      mapping <- aes(x = datum, y = waarde, color = id, group = id)
+      grafiek_titel <- "Individueel verloop per geselecteerd dier"
+    }
+
+    # 3. grafiek
+    ggplot(plot_data, mapping) +
+      geom_line(linewidth = 0.8, alpha = 0.8) +
+      geom_point(size = 1.5) +
+      theme_minimal() +
+      labs(
+        title = grafiek_titel,
+        x = "Datum",
+        y = "Waarde",
+        color = if (is.null(input$dieren)) "Kenmerk" else "Dier ID"
+      ) +
+      # grafieken per kenmerk als er meerdere gekozen zijn
+      facet_wrap(~kenmerk, scales = "free_y")
+  })
+
+  # DataTable output genereren binnen de bslib card
+  output$tabel <- renderDT({
+    req(dt())
+
+    # Zoek de positie van de kolom 'datum' op; DT telt vanaf 0, R vanaf 1
+    datum_index <- which(colnames(dt()) == "datum") - 1
+
+    datatable(
+      dt() |>
+        arrange(id, datum),
+      style = "bootstrap5",
+      fillContainer = TRUE,
+      rownames = FALSE,
+      options = list(
+        pageLength = 10,
+        dom = 'ltp',
+        autoWidth = TRUE, # Verplicht om handmatige breedtes toe te staan
+        columnDefs = list(
+          list(
+            targets = datum_index, # De index van de datumkolom
+            width = '150px',       # Pas dit getal aan om hem breder of smaller te maken
+            className = 'dt-left'  # Zorgt dat de datum netjes links uitlijnt
+          )
+        )
+      )
+    ) |>
+      # Formatteer de datumkolom naar Nederlands formaat (DD-MM-YYYY)
+      formatDate(
+        columns = "datum",
+        method = "toLocaleDateString",
+        params = list(
+          locales = "nl-NL",
+          options = list(
+            year = "numeric",
+            month = "2-digit",
+            day = "2-digit",
+            timeZone = "UTC" # datum is UTC; voorkomt een dag verschuiving in andere tijdzones
+          )
+        )
+      )
+  })
+
+  # Statistiek 1: aantal rijen
+  output$stat_rijen <- renderText({ nrow(dt()) })
+
+  # Statistiek 2: aantal unieke dieren in selectie
+  output$stat_dieren <- renderText({ n_distinct(dt()$id) })
+
+  # Download handlerfunctionaliteit
+  output$download_data <- downloadHandler(
+    filename = function() {
+      paste("productiedata-export-", Sys.Date(), ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(dt(), file, row.names = FALSE)
+    }
+  )
+}
+
+shinyApp(ui, server)
+```
+:::
+
+## Stap 16: Publiceer je app
+
+De app werkt nu, maar alleen lokaal. Je kunt de app ook online publiceren. Dit behandelen we niet in deze cursus. Je hebt de volgende mogelijkheden:
+
+1. Deel de code van je app met anderen, die kunnen de code op hun pc uitvoeren
+2. Je kunt je app ook via een hosting site zoals [www.github.com](https://github.com/) delen. Anderen kunnen de app dan direct vanaf GitHub uitvoeren met de code `runGitHub("naamvanjerepo", "jegithubnaam")`, bijvoorbeeld `runGitHub( "costerAnalytics/wsappproductie", "albartcoster")` (ik weet niet of dit werkt als je niet ingelogd bent)
+3. Er zijn ook diensten waarop je je app kunt delen zodat hij via het web toegankelijk is. De eenvoudigste is [shinyapps.io](https://www.shinyapps.io/)
+4. Er zijn ook nog andere mogelijkheden, die benutten wij voor het publiceren van onze apps.
