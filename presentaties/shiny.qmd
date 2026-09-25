@@ -49,3 +49,103 @@ runExample("01_hello", display.mode = "showcase")
 ```
 :::
 
+## Stap 1. Opzet van het project
+
+1. Maak een nieuwe project in een nieuwe map, bijvoorbeeld `wsapp`
+2. Maak in deze map een bronbetand genaamd `app.R`
+3. Open dat bestand je editor, werk in dat bestand
+
+## Stap 2. Opzet van de App
+
+1. Laad pakketten `shiny` en `bslib` in je app. Installeer ze als je ze nog niet geïnstalleerd hebt.
+2. Schrijf de basisstructuur voor een app. Een app heeft een `ui` object, *user interface* en een `server` functie. Functie shinyApp(ui,server) maakt een shiny App van het paar `ui` en `server`
+
+::: {.codewindow .r chrome="windows"}
+code.R
+```{r}
+#| label: Opzet App
+#| echo: true
+#| output: true
+#| warning: false
+#| eval: false
+
+library(shiny)
+library(bslib)
+
+ui = page_navbar(
+  title = 'Analyse productiedata'
+)
+
+server = function(input, output,session) {}
+
+shinyApp(ui,server)
+```
+:::
+
+## Stap 3. Laden van de data
+
+1. We werken met het bestand [`productiedata.dat`](https://github.com/costerAnalytics/wsappproductie/blob/main/data/productiedata.dat). Maak een map `data` in je mappenstruktuur en plaats het bestand daarin
+2. Lees het bestand in en zorg dat alles goed staat
+3. We lezen het bestand buiten de shiny code in, dus helemaal bovenaan het `app.R` bestand
+4. Om de gegevens goed te krijgen doen we een paar bewerkingen met functies uit het `dplyr` pakket. We laden dit dus ook
+5. Opmerking; neem even tijd om het originele `productiedata.dat` bestand te bekijken, en kijk ook hoe het `data` object er vervolgens uitziet. Gebruik bijvoorbeeld de opdracht `summary(data)` in de console
+
+::: {.codewindow .r chrome="windows"}
+code.R
+```{r}
+#| label: inlezen productiedata.dat
+#| echo: true
+#| output: true
+#| warning: false
+#| eval: false
+
+library(shiny)
+library(bslib)
+library(dplyr)
+
+data <- read.table('data/productiedata.dat',
+                   sep = ",",
+                   dec = ".",
+                   header = TRUE,
+                   row.names = 1, ## eerste kolom is een rijnummer
+                   na.strings = "NA") |>
+  rename(vreettijd = 15) |> 
+  rename_with(tolower) |> 
+  mutate(datum = parse_date_time(datum, orders = "%Y-%m-%d")) |> ## zorg dat datum goed staat
+  mutate(id = factor(id)) ## id moet een factor zijn
+
+```
+:::
+
+## Stap 4. Eerste grafiek
+
+1. We maken een grafiek van de gemiddelde melkproductie per dag met functies uit het `ggplot2`. Dit moet in de `server` functie gebeuren
+2. We zorgen ervoor dat de grafiek in de app te zien is. Dit gebeurt in het `ui` object
+
+::: {.codewindow .r chrome="windows"}
+code.R
+```{r}
+#| label: eerste grafiek
+#| echo: true
+#| output: true
+#| warning: false
+#| eval: false
+
+
+
+
+
+
+
+```
+:::
+
+
+
+
+
+
+
+
+
+
