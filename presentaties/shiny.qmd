@@ -1,26 +1,51 @@
 ---
-title: "R Basis"
-author: "Albart Coster"
-format: revealjs
+title: "Bouwen van R-Shiny App"
+format:
+  revealjs:
+    theme: [default,styles.scss]
+    scrollable: true
+    code-overflow: wrap
+    code-line-numbers: true
+
+revealjs-plugins:
+  - codewindow
 ---
 
-## Quarto
+## Shiny
 
-Quarto enables you to weave together content and executable code into a finished presentation. To learn more about Quarto presentations see <https://quarto.org/docs/presentations/>.
+[Shiny](https://shiny.posit.co/r/getstarted/shiny-basics/lesson1/) is een pakket om interactieve webtoepassingen te maken met R. 
 
-## Bullets
+We installeren het `shiny` pakket met de volgende opdracht:
 
-When you click the **Render** button a document will be generated that includes:
-
--   Content authored with markdown
--   Output from executable code
-
-## Code
-
-When you click the **Render** button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:
-
+::: {.codewindow .r chrome="windows"}
+code.R
 ```{r}
-1 + 1
-```
+#| label: shiny1
+#| echo: true
+#| output: true
+#| warning: false
+#| eval: false
 
+
+install.packages('shiny')
+```
+:::
+
+Het `shiny` pakket bevat 11 werkende voorbeelden. We kunnen een voorbeeld uitvoeren:
+
+::: {.codewindow .r chrome="windows"}
+code.R
+```{r}
+#| label: shiny2
+#| echo: true
+#| output: true
+#| warning: false
+#| eval: false
+
+
+library(shiny)
+runExample("01_hello", display.mode = "showcase")
+
+```
+:::
 

@@ -1,9 +1,11 @@
 {
-  "hash": "0bd02ecb73363a30e6d56be908a30b85",
+  "hash": "5a8cb44e955c33b336ff46aa4992ec67",
   "result": {
     "engine": "knitr",
-    "markdown": "---\ntitle: \"R Basis\"\nauthor: \"Albart Coster\"\nformat: revealjs\n---\n\n## Quarto\n\nQuarto enables you to weave together content and executable code into a finished presentation. To learn more about Quarto presentations see <https://quarto.org/docs/presentations/>.\n\n## Bullets\n\nWhen you click the **Render** button a document will be generated that includes:\n\n-   Content authored with markdown\n-   Output from executable code\n\n## Code\n\nWhen you click the **Render** button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:\n\n\n::: {.cell}\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 2\n```\n\n\n:::\n:::\n\n\n\n",
-    "supporting": [],
+    "markdown": "---\ntitle: \"R Shiny\"\nformat:\n  revealjs:\n    theme: [default,styles.scss]\n    scrollable: true\n    code-overflow: wrap\n    code-line-numbers: true\n\nrevealjs-plugins:\n  - codewindow\n---\n\n## Shiny\n\n[Shiny](https://shiny.posit.co/r/getstarted/shiny-basics/lesson1/) is een pakket om interactieve webtoepassingen te maken met R. \n\nWe installeren het `shiny` pakket met de volgende opdracht:\n\n::: {.codewindow .r chrome=\"windows\"}\ncode.R\n\n::: {.cell}\n\n```{.r .cell-code}\ninstall.packages('shiny')\n```\n:::\n\n:::\n\nHet `shiny` pakket bevat 11 werkende voorbeelden. We kunnen een voorbeeld uitvoeren:\n\n::: {.codewindow .r chrome=\"windows\"}\ncode.R\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(shiny)\nrunExample(\"01_hello\", display.mode = \"showcase\")\n```\n:::\n\n:::\n\n",
+    "supporting": [
+      "shiny_files"
+    ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],

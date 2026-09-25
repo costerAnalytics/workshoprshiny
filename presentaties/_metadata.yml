@@ -1,0 +1,9 @@
+# Instellingen die voor alle presentaties in deze map gelden
+
+format:
+  revealjs:
+    menu:
+      custom:
+        - title: "Cursuswebsite"
+          icon: '<span style="font-size: 1.6em;">🏠</span>'
+          content: '<p style="padding: 1em;"><a href="../index.html">Terug naar de cursuswebsite</a></p>'

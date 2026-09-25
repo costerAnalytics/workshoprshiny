@@ -5,3 +5,10 @@ $font-family-sans-serif: "Lato", sans-serif;
 $font-family-monospace: "Space Mono", monospace;
 
 /*-- scss:rules --*/
+
+.reveal .password-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
