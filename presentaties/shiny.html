@@ -9,7 +9,7 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.10.18">
 
-  <title>R-shiny workshop – Bouwen van R-Shiny App</title>
+  <title>R-shiny workshop – Bouwen van een R-Shiny App</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -200,7 +200,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Bouwen van R-Shiny App</h1>
+  <h1 class="title">Bouwen van een R-Shiny App</h1>
 
 <div class="quarto-title-authors">
 </div>
@@ -368,8 +368,8 @@
 <h2>Stap 6: Eerste interactiviteit</h2>
 <p>We willen nu graag selecteren op laktatiedagen en laktatienummer, zodat de grafiek het gemiddelde van de geselecteerde dieren laat zien.</p>
 <ol type="1">
-<li>We moeten selectieboxen maken voor laktatiedagen en laktatienummer, dit moet in het <code>ui</code> object. Om de code mooi te houden maken we eerst een lijst met daarin de twee selecties.</li>
-<li>De selectieboxen moeten in een <code>sidebar</code> van het dashboard komen, hiervoor gebruiken we functie <code>sidebar</code></li>
+<li>We moeten schuifregelaars (<em>sliders</em>) maken voor laktatiedagen en laktatienummer, dit moet in het <code>ui</code> object. Om de code mooi te houden maken we eerst een lijst met daarin de twee schuifregelaars.</li>
+<li>De schuifregelaars moeten in een <code>sidebar</code> van het dashboard komen, hiervoor gebruiken we functie <code>sidebar</code></li>
 <li>De selectie moet doorwerken in de data, dit gebeurt in de <code>server</code> functie</li>
 <li>Let op; we <em>wrappen</em>/wikkelen de code voor de behandeling van de data in de server functie in een <code>reactive</code> functie. Dit moet omdat deze code telkens moet lopen als we de selecties veranderen. Het resultaat van een <code>reactive</code> functie is een <code>reactive</code> functie, hier moeten we mee werken alsof het een functie is, vandaar <code>dt()</code>. Voor achtergrond, lees <a href="https://mastering-shiny.org/basic-reactivity.html">Basic Reactivity</a>.</li>
 </ol>
@@ -447,71 +447,73 @@
 <section id="stap-7-tabel" class="slide level2 scrollable">
 <h2>Stap 7: Tabel</h2>
 <ol type="1">
-<li>We willen ook een tabel met daarin de geselecteerde data; hiervoor gebruiken we pakket <code>DT</code></li>
+<li>We willen ook een tabel met daarin de geselecteerde data; hiervoor gebruiken we pakket <code>DT</code>. Zet <code>library(DT)</code> bovenaan <code>app.R</code>, bij de andere pakketten</li>
 <li>De tabel wordt in de <code>output</code> lijst in <code>server</code> gezet en we geven hem vervolgens weer in <code>ui</code></li>
 <li>De selecties laten we voorlopig voor wat ze zijn</li>
 </ol>
 <div class="codewindow r" data-chrome="windows">
 <p>code.R</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a aria-label="1"></a>ui <span class="ot">=</span> <span class="fu">page_navbar</span>(</span>
-<span id="cb8-2"><a aria-label="2"></a>  <span class="at">title =</span> <span class="st">'Analyse productiedata'</span>,</span>
-<span id="cb8-3"><a aria-label="3"></a>  <span class="at">sidebar =</span> <span class="fu">sidebar</span>(inputs),</span>
-<span id="cb8-4"><a aria-label="4"></a>  <span class="fu">nav_panel</span>(</span>
-<span id="cb8-5"><a aria-label="5"></a>    <span class="at">title =</span> <span class="st">"Dashboard"</span>,</span>
-<span id="cb8-6"><a aria-label="6"></a>    <span class="fu">card</span>(</span>
-<span id="cb8-7"><a aria-label="7"></a>      <span class="at">full_screen =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb8-8"><a aria-label="8"></a>      <span class="fu">card_header</span>(<span class="st">"Kenmerken over de tijd"</span>),</span>
-<span id="cb8-9"><a aria-label="9"></a>      <span class="fu">card_body</span>(<span class="fu">plotOutput</span>(<span class="st">"grafiek"</span>))</span>
-<span id="cb8-10"><a aria-label="10"></a>    ),</span>
-<span id="cb8-11"><a aria-label="11"></a>    <span class="fu">card</span>(</span>
-<span id="cb8-12"><a aria-label="12"></a>      <span class="at">full_screen =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb8-13"><a aria-label="13"></a>      <span class="fu">card_header</span>(<span class="st">"Tabel van de gegevens"</span>),</span>
-<span id="cb8-14"><a aria-label="14"></a>      <span class="fu">card_body</span>(<span class="at">fillable =</span> <span class="cn">TRUE</span>, <span class="fu">DTOutput</span>(<span class="st">"tabel"</span>))</span>
-<span id="cb8-15"><a aria-label="15"></a>    )</span>
-<span id="cb8-16"><a aria-label="16"></a>  )</span>
-<span id="cb8-17"><a aria-label="17"></a>)</span>
-<span id="cb8-18"><a aria-label="18"></a></span>
-<span id="cb8-19"><a aria-label="19"></a>server <span class="ot">=</span> <span class="cf">function</span>(input, output, session) {</span>
-<span id="cb8-20"><a aria-label="20"></a>  dt <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
-<span id="cb8-21"><a aria-label="21"></a>    data <span class="sc">|&gt;</span></span>
-<span id="cb8-22"><a aria-label="22"></a>      <span class="fu">filter</span>(</span>
-<span id="cb8-23"><a aria-label="23"></a>        productie <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
-<span id="cb8-24"><a aria-label="24"></a>        <span class="sc">!</span><span class="fu">is.na</span>(datum),</span>
-<span id="cb8-25"><a aria-label="25"></a>        lactatie <span class="sc">&gt;=</span> input<span class="sc">$</span>lacts[<span class="dv">1</span>],</span>
-<span id="cb8-26"><a aria-label="26"></a>        lactatie <span class="sc">&lt;=</span> input<span class="sc">$</span>lacts[<span class="dv">2</span>],</span>
-<span id="cb8-27"><a aria-label="27"></a>        dim <span class="sc">&gt;=</span> input<span class="sc">$</span>dims[<span class="dv">1</span>],</span>
-<span id="cb8-28"><a aria-label="28"></a>        dim <span class="sc">&lt;=</span> input<span class="sc">$</span>dims[<span class="dv">2</span>]</span>
-<span id="cb8-29"><a aria-label="29"></a>      )</span>
-<span id="cb8-30"><a aria-label="30"></a>  })</span>
-<span id="cb8-31"><a aria-label="31"></a></span>
-<span id="cb8-32"><a aria-label="32"></a>  output<span class="sc">$</span>grafiek <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
-<span id="cb8-33"><a aria-label="33"></a>    <span class="fu">req</span>(<span class="fu">dt</span>())</span>
-<span id="cb8-34"><a aria-label="34"></a></span>
-<span id="cb8-35"><a aria-label="35"></a>    <span class="fu">dt</span>() <span class="sc">|&gt;</span></span>
-<span id="cb8-36"><a aria-label="36"></a>      <span class="fu">group_by</span>(datum) <span class="sc">|&gt;</span></span>
-<span id="cb8-37"><a aria-label="37"></a>      <span class="fu">summarise</span>(<span class="at">productie =</span> <span class="fu">mean</span>(productie, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-38"><a aria-label="38"></a>      <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> datum, <span class="at">y =</span> productie)) <span class="sc">+</span></span>
-<span id="cb8-39"><a aria-label="39"></a>      <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.8</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb8-40"><a aria-label="40"></a>      <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
-<span id="cb8-41"><a aria-label="41"></a>      <span class="fu">labs</span>(</span>
-<span id="cb8-42"><a aria-label="42"></a>        <span class="at">title =</span> <span class="st">'Melkproductie'</span>,</span>
-<span id="cb8-43"><a aria-label="43"></a>        <span class="at">x =</span> <span class="st">"Datum"</span>,</span>
-<span id="cb8-44"><a aria-label="44"></a>        <span class="at">y =</span> <span class="st">"Productie"</span></span>
-<span id="cb8-45"><a aria-label="45"></a>      )</span>
-<span id="cb8-46"><a aria-label="46"></a>  })</span>
-<span id="cb8-47"><a aria-label="47"></a></span>
-<span id="cb8-48"><a aria-label="48"></a>  output<span class="sc">$</span>tabel <span class="ot">&lt;-</span> <span class="fu">renderDT</span>({</span>
-<span id="cb8-49"><a aria-label="49"></a>    <span class="fu">req</span>(<span class="fu">dt</span>())</span>
-<span id="cb8-50"><a aria-label="50"></a></span>
-<span id="cb8-51"><a aria-label="51"></a>    <span class="fu">datatable</span>(</span>
-<span id="cb8-52"><a aria-label="52"></a>      <span class="fu">dt</span>() <span class="sc">|&gt;</span></span>
-<span id="cb8-53"><a aria-label="53"></a>        <span class="fu">arrange</span>(id, datum)</span>
-<span id="cb8-54"><a aria-label="54"></a>    )</span>
-<span id="cb8-55"><a aria-label="55"></a>  })</span>
-<span id="cb8-56"><a aria-label="56"></a>}</span>
-<span id="cb8-57"><a aria-label="57"></a></span>
-<span id="cb8-58"><a aria-label="58"></a><span class="fu">shinyApp</span>(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a aria-label="1"></a><span class="fu">library</span>(DT)</span>
+<span id="cb8-2"><a aria-label="2"></a></span>
+<span id="cb8-3"><a aria-label="3"></a>ui <span class="ot">=</span> <span class="fu">page_navbar</span>(</span>
+<span id="cb8-4"><a aria-label="4"></a>  <span class="at">title =</span> <span class="st">'Analyse productiedata'</span>,</span>
+<span id="cb8-5"><a aria-label="5"></a>  <span class="at">sidebar =</span> <span class="fu">sidebar</span>(inputs),</span>
+<span id="cb8-6"><a aria-label="6"></a>  <span class="fu">nav_panel</span>(</span>
+<span id="cb8-7"><a aria-label="7"></a>    <span class="at">title =</span> <span class="st">"Dashboard"</span>,</span>
+<span id="cb8-8"><a aria-label="8"></a>    <span class="fu">card</span>(</span>
+<span id="cb8-9"><a aria-label="9"></a>      <span class="at">full_screen =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-10"><a aria-label="10"></a>      <span class="fu">card_header</span>(<span class="st">"Kenmerken over de tijd"</span>),</span>
+<span id="cb8-11"><a aria-label="11"></a>      <span class="fu">card_body</span>(<span class="fu">plotOutput</span>(<span class="st">"grafiek"</span>))</span>
+<span id="cb8-12"><a aria-label="12"></a>    ),</span>
+<span id="cb8-13"><a aria-label="13"></a>    <span class="fu">card</span>(</span>
+<span id="cb8-14"><a aria-label="14"></a>      <span class="at">full_screen =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-15"><a aria-label="15"></a>      <span class="fu">card_header</span>(<span class="st">"Tabel van de gegevens"</span>),</span>
+<span id="cb8-16"><a aria-label="16"></a>      <span class="fu">card_body</span>(<span class="at">fillable =</span> <span class="cn">TRUE</span>, <span class="fu">DTOutput</span>(<span class="st">"tabel"</span>))</span>
+<span id="cb8-17"><a aria-label="17"></a>    )</span>
+<span id="cb8-18"><a aria-label="18"></a>  )</span>
+<span id="cb8-19"><a aria-label="19"></a>)</span>
+<span id="cb8-20"><a aria-label="20"></a></span>
+<span id="cb8-21"><a aria-label="21"></a>server <span class="ot">=</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb8-22"><a aria-label="22"></a>  dt <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb8-23"><a aria-label="23"></a>    data <span class="sc">|&gt;</span></span>
+<span id="cb8-24"><a aria-label="24"></a>      <span class="fu">filter</span>(</span>
+<span id="cb8-25"><a aria-label="25"></a>        productie <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
+<span id="cb8-26"><a aria-label="26"></a>        <span class="sc">!</span><span class="fu">is.na</span>(datum),</span>
+<span id="cb8-27"><a aria-label="27"></a>        lactatie <span class="sc">&gt;=</span> input<span class="sc">$</span>lacts[<span class="dv">1</span>],</span>
+<span id="cb8-28"><a aria-label="28"></a>        lactatie <span class="sc">&lt;=</span> input<span class="sc">$</span>lacts[<span class="dv">2</span>],</span>
+<span id="cb8-29"><a aria-label="29"></a>        dim <span class="sc">&gt;=</span> input<span class="sc">$</span>dims[<span class="dv">1</span>],</span>
+<span id="cb8-30"><a aria-label="30"></a>        dim <span class="sc">&lt;=</span> input<span class="sc">$</span>dims[<span class="dv">2</span>]</span>
+<span id="cb8-31"><a aria-label="31"></a>      )</span>
+<span id="cb8-32"><a aria-label="32"></a>  })</span>
+<span id="cb8-33"><a aria-label="33"></a></span>
+<span id="cb8-34"><a aria-label="34"></a>  output<span class="sc">$</span>grafiek <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb8-35"><a aria-label="35"></a>    <span class="fu">req</span>(<span class="fu">dt</span>())</span>
+<span id="cb8-36"><a aria-label="36"></a></span>
+<span id="cb8-37"><a aria-label="37"></a>    <span class="fu">dt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-38"><a aria-label="38"></a>      <span class="fu">group_by</span>(datum) <span class="sc">|&gt;</span></span>
+<span id="cb8-39"><a aria-label="39"></a>      <span class="fu">summarise</span>(<span class="at">productie =</span> <span class="fu">mean</span>(productie, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-40"><a aria-label="40"></a>      <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> datum, <span class="at">y =</span> productie)) <span class="sc">+</span></span>
+<span id="cb8-41"><a aria-label="41"></a>      <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.8</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb8-42"><a aria-label="42"></a>      <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb8-43"><a aria-label="43"></a>      <span class="fu">labs</span>(</span>
+<span id="cb8-44"><a aria-label="44"></a>        <span class="at">title =</span> <span class="st">'Melkproductie'</span>,</span>
+<span id="cb8-45"><a aria-label="45"></a>        <span class="at">x =</span> <span class="st">"Datum"</span>,</span>
+<span id="cb8-46"><a aria-label="46"></a>        <span class="at">y =</span> <span class="st">"Productie"</span></span>
+<span id="cb8-47"><a aria-label="47"></a>      )</span>
+<span id="cb8-48"><a aria-label="48"></a>  })</span>
+<span id="cb8-49"><a aria-label="49"></a></span>
+<span id="cb8-50"><a aria-label="50"></a>  output<span class="sc">$</span>tabel <span class="ot">&lt;-</span> <span class="fu">renderDT</span>({</span>
+<span id="cb8-51"><a aria-label="51"></a>    <span class="fu">req</span>(<span class="fu">dt</span>())</span>
+<span id="cb8-52"><a aria-label="52"></a></span>
+<span id="cb8-53"><a aria-label="53"></a>    <span class="fu">datatable</span>(</span>
+<span id="cb8-54"><a aria-label="54"></a>      <span class="fu">dt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-55"><a aria-label="55"></a>        <span class="fu">arrange</span>(id, datum)</span>
+<span id="cb8-56"><a aria-label="56"></a>    )</span>
+<span id="cb8-57"><a aria-label="57"></a>  })</span>
+<span id="cb8-58"><a aria-label="58"></a>}</span>
+<span id="cb8-59"><a aria-label="59"></a></span>
+<span id="cb8-60"><a aria-label="60"></a><span class="fu">shinyApp</span>(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -524,6 +526,7 @@
 <li>De breedte van kolom <code>datum</code> moet aangepast worden omdat het anders niet past. Hiervoor zoeken we eerst het kolomnummer van deze kolom op (<code>datum_index</code>), en geven vervolgens aan dat de kolom van deze index breder moet worden en links uitlijnt</li>
 <li>We willen de rijnummers van de tabel niet meer zien, diernummer voldoet, daarom <code>rownames=FALSE</code></li>
 <li>En nog een paar aanpassingen</li>
+<li>Vervang in de <code>server</code> functie de oude <code>output$tabel</code> door de code hieronder. Let op: deze code hoort <em>binnen</em> de <code>server</code> functie</li>
 </ol>
 <div class="codewindow r" data-chrome="windows">
 <p>code.R</p>
@@ -575,11 +578,11 @@
 <h2>Stap 9: Extra informatie</h2>
 <p>We willen nu graag een blokje met het aantal geselecteerde dieren en een blokje met het aantal geselecteerde rijen in de data. Verder plaatsen we de <code>cards</code> met de grafiek en de tabel, samen met de twee nieuwe blokjes, buiten het <code>ui</code> object, zodat het er netter uitziet:</p>
 <ol type="1">
-<li>We willen de blokjes naast elkaar, daarom moeten we het scherm in 2-en opdelen; dit doen we met functie <code>layout_column_wrap</code>.</li>
+<li>We willen de blokjes naast elkaar, daarom moeten we het scherm in tweeën delen; dit doen we met functie <code>layout_column_wrap</code>.</li>
 <li>De blokjes krijgen hun waarde uit een berekening die in <code>server</code> wordt uitgevoerd</li>
-<li>Het formaat van de blokjes wordt dmv een soort css ingegeven</li>
-<li>De <code>cards</code> worden nu in het <code>ui</code> object geladen, we zetten er <code>!!!</code> om de lijst goed uit te pakken</li>
-<li>De statistieken voor de blokjes worden in <code>server</code> berekend en komen vervolgens in <code>ui</code></li>
+<li>Het formaat van de tekst in de blokjes geven we op met CSS</li>
+<li>De <code>cards</code> worden nu in het <code>ui</code> object geladen, we zetten er <code>!!!</code> voor om de lijst goed uit te pakken</li>
+<li>De statistieken voor de blokjes worden in <code>server</code> berekend en komen vervolgens in <code>ui</code>. Let op: de laatste twee <code>output$...</code> regels horen <em>binnen</em> de <code>server</code> functie</li>
 </ol>
 <div class="codewindow r" data-chrome="windows">
 <p>code.R</p>
@@ -639,9 +642,9 @@
 </div>
 </div>
 </section>
-<section id="stap-10-grote-geheel" class="slide level2">
-<h2>Stap 10: grote geheel</h2>
-<p>We geven nu weer de hele app weer, zodat je het grote geheel niet uit het oog verliest</p>
+<section id="stap-10-het-grote-geheel" class="slide level2">
+<h2>Stap 10: Het grote geheel</h2>
+<p>We laten nu de hele app zien, zodat je het grote geheel niet uit het oog verliest</p>
 <div class="codewindow r" data-chrome="windows">
 <p>code.R</p>
 <div class="cell">
@@ -811,6 +814,629 @@
 <span id="cb11-164"><a aria-label="164"></a><span class="fu">shinyApp</span>(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+</section>
+<section id="stap-11-selectie-van-variabelen" class="slide level2 scrollable">
+<h2>Stap 11: selectie van variabelen</h2>
+<p>De app geeft tot nu toe enkel melkproductie weer, terwijl de dataset ook andere variabelen bevat die we kunnen weergeven. Dit regelen we nu:</p>
+<ol type="1">
+<li>We maken een lijstje met de variabelen in de dataset die weergegeven kunnen worden</li>
+<li>We maken een nieuw selectiemenu, waarin gebruikers één of meer daarvan kunnen kiezen</li>
+<li>We zetten de variabelen van de dataset onder elkaar (dus: <code>id</code>, <code>datum</code>, <code>lactatie</code>, <code>dim</code>, <code>kenmerk</code>, <code>waarde</code>), het zogenaamde <em>lange</em> formaat. Dit doen we met functie <code>pivot_longer</code> uit het pakket <code>tidyr</code> bij het maken van de grafiek. Zet daarom <code>library(tidyr)</code> bovenaan <code>app.R</code></li>
+<li>Bij het maken van de tabel selecteren we ook uit deze kenmerken</li>
+<li>Opnieuw laten we enkel de veranderingen zien: <code>bkv</code>, <code>km</code> en <code>inputs</code> komen na het inlezen van de data, en de <code>server</code> functie vervangt de oude</li>
+</ol>
+<div class="codewindow r" data-chrome="windows">
+<p>code.R</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a aria-label="1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb12-2"><a aria-label="2"></a></span>
+<span id="cb12-3"><a aria-label="3"></a>bkv <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"datum"</span>, <span class="st">"id"</span>, <span class="st">"lactatie"</span>, <span class="st">"dim"</span>, <span class="st">"productie"</span>) <span class="co"># lijstje met vaste variabelen</span></span>
+<span id="cb12-4"><a aria-label="4"></a>km <span class="ot">&lt;-</span> <span class="fu">colnames</span>(data)[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)] <span class="do">## de andere variabelen, kenmerken waaruit we kunnen kiezen</span></span>
+<span id="cb12-5"><a aria-label="5"></a></span>
+<span id="cb12-6"><a aria-label="6"></a>inputs <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb12-7"><a aria-label="7"></a>  <span class="fu">selectInput</span>(</span>
+<span id="cb12-8"><a aria-label="8"></a>    <span class="at">inputId =</span> <span class="st">"kenmerk"</span>,</span>
+<span id="cb12-9"><a aria-label="9"></a>    <span class="at">label =</span> <span class="st">"Selecteer kenmerk(en)"</span>,</span>
+<span id="cb12-10"><a aria-label="10"></a>    <span class="at">choices =</span> km,</span>
+<span id="cb12-11"><a aria-label="11"></a>    <span class="at">selected =</span> km[<span class="dv">1</span>],</span>
+<span id="cb12-12"><a aria-label="12"></a>    <span class="at">multiple =</span> <span class="cn">TRUE</span></span>
+<span id="cb12-13"><a aria-label="13"></a>  ),</span>
+<span id="cb12-14"><a aria-label="14"></a>  <span class="fu">sliderInput</span>(</span>
+<span id="cb12-15"><a aria-label="15"></a>    <span class="at">inputId =</span> <span class="st">'lacts'</span>,</span>
+<span id="cb12-16"><a aria-label="16"></a>    <span class="at">label =</span> <span class="st">"Laktaties:"</span>,</span>
+<span id="cb12-17"><a aria-label="17"></a>    <span class="at">min =</span> <span class="fu">min</span>(data<span class="sc">$</span>lactatie, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-18"><a aria-label="18"></a>    <span class="at">max =</span> <span class="fu">max</span>(data<span class="sc">$</span>lactatie, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-19"><a aria-label="19"></a>    <span class="at">step =</span> <span class="dv">1</span>,</span>
+<span id="cb12-20"><a aria-label="20"></a>    <span class="at">value =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb12-21"><a aria-label="21"></a>  ),</span>
+<span id="cb12-22"><a aria-label="22"></a>  <span class="fu">sliderInput</span>(</span>
+<span id="cb12-23"><a aria-label="23"></a>    <span class="at">inputId =</span> <span class="st">'dims'</span>,</span>
+<span id="cb12-24"><a aria-label="24"></a>    <span class="at">label =</span> <span class="st">"Laktatiedagen:"</span>,</span>
+<span id="cb12-25"><a aria-label="25"></a>    <span class="at">min =</span> <span class="fu">min</span>(data<span class="sc">$</span>dim, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-26"><a aria-label="26"></a>    <span class="at">max =</span> <span class="fu">max</span>(data<span class="sc">$</span>dim, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-27"><a aria-label="27"></a>    <span class="at">step =</span> <span class="dv">1</span>,</span>
+<span id="cb12-28"><a aria-label="28"></a>    <span class="at">value =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">365</span>)</span>
+<span id="cb12-29"><a aria-label="29"></a>  )</span>
+<span id="cb12-30"><a aria-label="30"></a>)</span>
+<span id="cb12-31"><a aria-label="31"></a></span>
+<span id="cb12-32"><a aria-label="32"></a>server <span class="ot">=</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb12-33"><a aria-label="33"></a>  dt <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb12-34"><a aria-label="34"></a>    <span class="fu">req</span>(input<span class="sc">$</span>lacts, input<span class="sc">$</span>dims, input<span class="sc">$</span>kenmerk)</span>
+<span id="cb12-35"><a aria-label="35"></a></span>
+<span id="cb12-36"><a aria-label="36"></a>    <span class="co"># Dynamisch bepalen welke kolommen we behouden (bkv + geselecteerde kenmerken)</span></span>
+<span id="cb12-37"><a aria-label="37"></a>    geselecteerde_kolommen <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">c</span>(bkv, input<span class="sc">$</span>kenmerk))</span>
+<span id="cb12-38"><a aria-label="38"></a></span>
+<span id="cb12-39"><a aria-label="39"></a>    data <span class="sc">|&gt;</span></span>
+<span id="cb12-40"><a aria-label="40"></a>      <span class="fu">filter</span>(</span>
+<span id="cb12-41"><a aria-label="41"></a>        productie <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
+<span id="cb12-42"><a aria-label="42"></a>        lactatie <span class="sc">&gt;=</span> input<span class="sc">$</span>lacts[<span class="dv">1</span>],</span>
+<span id="cb12-43"><a aria-label="43"></a>        lactatie <span class="sc">&lt;=</span> input<span class="sc">$</span>lacts[<span class="dv">2</span>],</span>
+<span id="cb12-44"><a aria-label="44"></a>        dim <span class="sc">&gt;=</span> input<span class="sc">$</span>dims[<span class="dv">1</span>],</span>
+<span id="cb12-45"><a aria-label="45"></a>        dim <span class="sc">&lt;=</span> input<span class="sc">$</span>dims[<span class="dv">2</span>]</span>
+<span id="cb12-46"><a aria-label="46"></a>      ) <span class="sc">|&gt;</span></span>
+<span id="cb12-47"><a aria-label="47"></a>      <span class="fu">select</span>(<span class="fu">all_of</span>(geselecteerde_kolommen)) <span class="do">## hier de kolommen die we willen laten zien</span></span>
+<span id="cb12-48"><a aria-label="48"></a>  })</span>
+<span id="cb12-49"><a aria-label="49"></a></span>
+<span id="cb12-50"><a aria-label="50"></a>  output<span class="sc">$</span>grafiek <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb12-51"><a aria-label="51"></a>    <span class="fu">req</span>(<span class="fu">dt</span>(), <span class="fu">nrow</span>(<span class="fu">dt</span>()) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb12-52"><a aria-label="52"></a></span>
+<span id="cb12-53"><a aria-label="53"></a>    <span class="co"># Pivot en bereid data voor de grafiek voor</span></span>
+<span id="cb12-54"><a aria-label="54"></a>    plot_data <span class="ot">&lt;-</span> <span class="fu">dt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb12-55"><a aria-label="55"></a>      <span class="fu">pivot_longer</span>(</span>
+<span id="cb12-56"><a aria-label="56"></a>        <span class="at">cols =</span> <span class="fu">all_of</span>(input<span class="sc">$</span>kenmerk),</span>
+<span id="cb12-57"><a aria-label="57"></a>        <span class="at">values_to =</span> <span class="st">"waarde"</span>,</span>
+<span id="cb12-58"><a aria-label="58"></a>        <span class="at">names_to =</span> <span class="st">"kenmerk"</span></span>
+<span id="cb12-59"><a aria-label="59"></a>      ) <span class="sc">|&gt;</span></span>
+<span id="cb12-60"><a aria-label="60"></a>      <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(waarde), waarde <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-61"><a aria-label="61"></a>      <span class="fu">group_by</span>(datum, kenmerk) <span class="sc">|&gt;</span></span>
+<span id="cb12-62"><a aria-label="62"></a>      <span class="fu">summarise</span>(<span class="at">waarde =</span> <span class="fu">mean</span>(waarde, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb12-63"><a aria-label="63"></a>    <span class="do">## hier berekenen we dus gemiddelde per kenmerk per dag</span></span>
+<span id="cb12-64"><a aria-label="64"></a></span>
+<span id="cb12-65"><a aria-label="65"></a>    <span class="fu">req</span>(<span class="fu">nrow</span>(plot_data) <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="co"># geen grafiek als een kenmerk geen waarden heeft</span></span>
+<span id="cb12-66"><a aria-label="66"></a></span>
+<span id="cb12-67"><a aria-label="67"></a>    <span class="fu">ggplot</span>(plot_data, <span class="fu">aes</span>(<span class="at">x =</span> datum, <span class="at">y =</span> waarde, <span class="at">color =</span> kenmerk, <span class="at">group =</span> kenmerk)) <span class="sc">+</span></span>
+<span id="cb12-68"><a aria-label="68"></a>      <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.8</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb12-69"><a aria-label="69"></a>      <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb12-70"><a aria-label="70"></a>      <span class="fu">labs</span>(</span>
+<span id="cb12-71"><a aria-label="71"></a>        <span class="at">title =</span> <span class="st">'Groepsgemiddelde over tijd'</span>,</span>
+<span id="cb12-72"><a aria-label="72"></a>        <span class="at">x =</span> <span class="st">"Datum"</span>,</span>
+<span id="cb12-73"><a aria-label="73"></a>        <span class="at">y =</span> <span class="st">"Waarde"</span>,</span>
+<span id="cb12-74"><a aria-label="74"></a>        <span class="at">color =</span> <span class="st">"Kenmerk"</span></span>
+<span id="cb12-75"><a aria-label="75"></a>      ) <span class="sc">+</span></span>
+<span id="cb12-76"><a aria-label="76"></a>      <span class="co"># grafieken per kenmerk als er meerdere gekozen zijn</span></span>
+<span id="cb12-77"><a aria-label="77"></a>      <span class="fu">facet_wrap</span>(<span class="sc">~</span>kenmerk, <span class="at">scales =</span> <span class="st">"free_y"</span>)</span>
+<span id="cb12-78"><a aria-label="78"></a>  })</span>
+<span id="cb12-79"><a aria-label="79"></a></span>
+<span id="cb12-80"><a aria-label="80"></a>  <span class="co"># DataTable output genereren binnen de bslib card</span></span>
+<span id="cb12-81"><a aria-label="81"></a>  output<span class="sc">$</span>tabel <span class="ot">&lt;-</span> <span class="fu">renderDT</span>({</span>
+<span id="cb12-82"><a aria-label="82"></a>    <span class="fu">req</span>(<span class="fu">dt</span>())</span>
+<span id="cb12-83"><a aria-label="83"></a></span>
+<span id="cb12-84"><a aria-label="84"></a>    <span class="co"># Zoek de positie van de kolom 'datum' op; DT telt vanaf 0, R vanaf 1</span></span>
+<span id="cb12-85"><a aria-label="85"></a>    datum_index <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">colnames</span>(<span class="fu">dt</span>()) <span class="sc">==</span> <span class="st">"datum"</span>) <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb12-86"><a aria-label="86"></a></span>
+<span id="cb12-87"><a aria-label="87"></a>    <span class="fu">datatable</span>(</span>
+<span id="cb12-88"><a aria-label="88"></a>      <span class="fu">dt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb12-89"><a aria-label="89"></a>        <span class="fu">arrange</span>(id, datum),</span>
+<span id="cb12-90"><a aria-label="90"></a>      <span class="at">style =</span> <span class="st">"bootstrap5"</span>,</span>
+<span id="cb12-91"><a aria-label="91"></a>      <span class="at">fillContainer =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb12-92"><a aria-label="92"></a>      <span class="at">rownames =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb12-93"><a aria-label="93"></a>      <span class="at">options =</span> <span class="fu">list</span>(</span>
+<span id="cb12-94"><a aria-label="94"></a>        <span class="at">pageLength =</span> <span class="dv">10</span>,</span>
+<span id="cb12-95"><a aria-label="95"></a>        <span class="at">dom =</span> <span class="st">'ltp'</span>,</span>
+<span id="cb12-96"><a aria-label="96"></a>        <span class="at">autoWidth =</span> <span class="cn">TRUE</span>, <span class="co"># Verplicht om handmatige breedtes toe te staan</span></span>
+<span id="cb12-97"><a aria-label="97"></a>        <span class="at">columnDefs =</span> <span class="fu">list</span>(</span>
+<span id="cb12-98"><a aria-label="98"></a>          <span class="fu">list</span>(</span>
+<span id="cb12-99"><a aria-label="99"></a>            <span class="at">targets =</span> datum_index, <span class="co"># De index van de datumkolom</span></span>
+<span id="cb12-100"><a aria-label="100"></a>            <span class="at">width =</span> <span class="st">'150px'</span>,       <span class="co"># Pas dit getal aan om hem breder of smaller te maken</span></span>
+<span id="cb12-101"><a aria-label="101"></a>            <span class="at">className =</span> <span class="st">'dt-left'</span>  <span class="co"># Zorgt dat de datum netjes links uitlijnt</span></span>
+<span id="cb12-102"><a aria-label="102"></a>          )</span>
+<span id="cb12-103"><a aria-label="103"></a>        )</span>
+<span id="cb12-104"><a aria-label="104"></a>      )</span>
+<span id="cb12-105"><a aria-label="105"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb12-106"><a aria-label="106"></a>      <span class="co"># Formatteer de datumkolom naar Nederlands formaat (DD-MM-YYYY)</span></span>
+<span id="cb12-107"><a aria-label="107"></a>      <span class="fu">formatDate</span>(</span>
+<span id="cb12-108"><a aria-label="108"></a>        <span class="at">columns =</span> <span class="st">"datum"</span>,</span>
+<span id="cb12-109"><a aria-label="109"></a>        <span class="at">method =</span> <span class="st">"toLocaleDateString"</span>,</span>
+<span id="cb12-110"><a aria-label="110"></a>        <span class="at">params =</span> <span class="fu">list</span>(</span>
+<span id="cb12-111"><a aria-label="111"></a>          <span class="at">locales =</span> <span class="st">"nl-NL"</span>,</span>
+<span id="cb12-112"><a aria-label="112"></a>          <span class="at">options =</span> <span class="fu">list</span>(</span>
+<span id="cb12-113"><a aria-label="113"></a>            <span class="at">year =</span> <span class="st">"numeric"</span>,</span>
+<span id="cb12-114"><a aria-label="114"></a>            <span class="at">month =</span> <span class="st">"2-digit"</span>,</span>
+<span id="cb12-115"><a aria-label="115"></a>            <span class="at">day =</span> <span class="st">"2-digit"</span>,</span>
+<span id="cb12-116"><a aria-label="116"></a>            <span class="at">timeZone =</span> <span class="st">"UTC"</span> <span class="co"># datum is UTC; voorkomt een dag verschuiving in andere tijdzones</span></span>
+<span id="cb12-117"><a aria-label="117"></a>          )</span>
+<span id="cb12-118"><a aria-label="118"></a>        )</span>
+<span id="cb12-119"><a aria-label="119"></a>      )</span>
+<span id="cb12-120"><a aria-label="120"></a>  })</span>
+<span id="cb12-121"><a aria-label="121"></a></span>
+<span id="cb12-122"><a aria-label="122"></a>  <span class="co"># Statistiek 1: aantal rijen</span></span>
+<span id="cb12-123"><a aria-label="123"></a>  output<span class="sc">$</span>stat_rijen <span class="ot">&lt;-</span> <span class="fu">renderText</span>({ <span class="fu">nrow</span>(<span class="fu">dt</span>()) })</span>
+<span id="cb12-124"><a aria-label="124"></a></span>
+<span id="cb12-125"><a aria-label="125"></a>  <span class="co"># Statistiek 2: aantal unieke dieren in selectie</span></span>
+<span id="cb12-126"><a aria-label="126"></a>  output<span class="sc">$</span>stat_dieren <span class="ot">&lt;-</span> <span class="fu">renderText</span>({ <span class="fu">n_distinct</span>(<span class="fu">dt</span>()<span class="sc">$</span>id) })</span>
+<span id="cb12-127"><a aria-label="127"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="stap-12-selectie-van-dieren" class="slide level2 scrollable">
+<h2>Stap 12: selectie van dieren</h2>
+<p>We willen het ook mogelijk maken om individuele dieren te selecteren.</p>
+<ol type="1">
+<li>We maken een nieuw selectiemenu, waarin gebruikers één of meer dieren kunnen kiezen</li>
+<li>De selectie moet doorwerken in de data: in <code>dt()</code> filteren we op de gekozen dieren. Zijn er geen dieren gekozen, dan houden we alle dieren</li>
+<li>Als dieren worden gekozen, maken we per dier een lijn en per kenmerk een aparte grafiek. Deze logica bouwen we in de code voor de grafiek</li>
+<li>Vervang in de <code>server</code> functie <code>dt()</code> en <code>output$grafiek</code> door de code hieronder</li>
+</ol>
+<div class="codewindow r" data-chrome="windows">
+<p>code.R</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-label="1"></a>inputs <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb13-2"><a aria-label="2"></a>  <span class="fu">selectInput</span>(</span>
+<span id="cb13-3"><a aria-label="3"></a>    <span class="at">inputId =</span> <span class="st">"kenmerk"</span>,</span>
+<span id="cb13-4"><a aria-label="4"></a>    <span class="at">label =</span> <span class="st">"Selecteer kenmerk(en)"</span>,</span>
+<span id="cb13-5"><a aria-label="5"></a>    <span class="at">choices =</span> km,</span>
+<span id="cb13-6"><a aria-label="6"></a>    <span class="at">selected =</span> km[<span class="dv">1</span>],</span>
+<span id="cb13-7"><a aria-label="7"></a>    <span class="at">multiple =</span> <span class="cn">TRUE</span></span>
+<span id="cb13-8"><a aria-label="8"></a>  ),</span>
+<span id="cb13-9"><a aria-label="9"></a>  <span class="fu">selectInput</span>(</span>
+<span id="cb13-10"><a aria-label="10"></a>    <span class="at">inputId =</span> <span class="st">"dieren"</span>,</span>
+<span id="cb13-11"><a aria-label="11"></a>    <span class="at">label =</span> <span class="st">"Selecteer dier(en)"</span>,</span>
+<span id="cb13-12"><a aria-label="12"></a>    <span class="at">choices =</span> <span class="fu">sort</span>(<span class="fu">unique</span>(data<span class="sc">$</span>id)),</span>
+<span id="cb13-13"><a aria-label="13"></a>    <span class="at">multiple =</span> <span class="cn">TRUE</span></span>
+<span id="cb13-14"><a aria-label="14"></a>  ),</span>
+<span id="cb13-15"><a aria-label="15"></a>  <span class="fu">sliderInput</span>(</span>
+<span id="cb13-16"><a aria-label="16"></a>    <span class="at">inputId =</span> <span class="st">'lacts'</span>,</span>
+<span id="cb13-17"><a aria-label="17"></a>    <span class="at">label =</span> <span class="st">"Laktaties:"</span>,</span>
+<span id="cb13-18"><a aria-label="18"></a>    <span class="at">min =</span> <span class="fu">min</span>(data<span class="sc">$</span>lactatie, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb13-19"><a aria-label="19"></a>    <span class="at">max =</span> <span class="fu">max</span>(data<span class="sc">$</span>lactatie, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb13-20"><a aria-label="20"></a>    <span class="at">step =</span> <span class="dv">1</span>,</span>
+<span id="cb13-21"><a aria-label="21"></a>    <span class="at">value =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb13-22"><a aria-label="22"></a>  ),</span>
+<span id="cb13-23"><a aria-label="23"></a>  <span class="fu">sliderInput</span>(</span>
+<span id="cb13-24"><a aria-label="24"></a>    <span class="at">inputId =</span> <span class="st">'dims'</span>,</span>
+<span id="cb13-25"><a aria-label="25"></a>    <span class="at">label =</span> <span class="st">"Laktatiedagen:"</span>,</span>
+<span id="cb13-26"><a aria-label="26"></a>    <span class="at">min =</span> <span class="fu">min</span>(data<span class="sc">$</span>dim, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb13-27"><a aria-label="27"></a>    <span class="at">max =</span> <span class="fu">max</span>(data<span class="sc">$</span>dim, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb13-28"><a aria-label="28"></a>    <span class="at">step =</span> <span class="dv">1</span>,</span>
+<span id="cb13-29"><a aria-label="29"></a>    <span class="at">value =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">365</span>)</span>
+<span id="cb13-30"><a aria-label="30"></a>  )</span>
+<span id="cb13-31"><a aria-label="31"></a>)</span>
+<span id="cb13-32"><a aria-label="32"></a></span>
+<span id="cb13-33"><a aria-label="33"></a>dt <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb13-34"><a aria-label="34"></a>  <span class="fu">req</span>(input<span class="sc">$</span>lacts, input<span class="sc">$</span>dims, input<span class="sc">$</span>kenmerk)</span>
+<span id="cb13-35"><a aria-label="35"></a></span>
+<span id="cb13-36"><a aria-label="36"></a>  <span class="co"># Dynamisch bepalen welke kolommen we behouden (bkv + geselecteerde kenmerken)</span></span>
+<span id="cb13-37"><a aria-label="37"></a>  geselecteerde_kolommen <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">c</span>(bkv, input<span class="sc">$</span>kenmerk))</span>
+<span id="cb13-38"><a aria-label="38"></a></span>
+<span id="cb13-39"><a aria-label="39"></a>  data <span class="sc">|&gt;</span></span>
+<span id="cb13-40"><a aria-label="40"></a>    <span class="fu">filter</span>(</span>
+<span id="cb13-41"><a aria-label="41"></a>      productie <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
+<span id="cb13-42"><a aria-label="42"></a>      lactatie <span class="sc">&gt;=</span> input<span class="sc">$</span>lacts[<span class="dv">1</span>],</span>
+<span id="cb13-43"><a aria-label="43"></a>      lactatie <span class="sc">&lt;=</span> input<span class="sc">$</span>lacts[<span class="dv">2</span>],</span>
+<span id="cb13-44"><a aria-label="44"></a>      dim <span class="sc">&gt;=</span> input<span class="sc">$</span>dims[<span class="dv">1</span>],</span>
+<span id="cb13-45"><a aria-label="45"></a>      dim <span class="sc">&lt;=</span> input<span class="sc">$</span>dims[<span class="dv">2</span>],</span>
+<span id="cb13-46"><a aria-label="46"></a>      <span class="fu">is.null</span>(input<span class="sc">$</span>dieren) <span class="sc">|</span> id <span class="sc">%in%</span> input<span class="sc">$</span>dieren <span class="co"># geen dieren gekozen: alle dieren</span></span>
+<span id="cb13-47"><a aria-label="47"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb13-48"><a aria-label="48"></a>    <span class="fu">select</span>(<span class="fu">all_of</span>(geselecteerde_kolommen))</span>
+<span id="cb13-49"><a aria-label="49"></a>})</span>
+<span id="cb13-50"><a aria-label="50"></a></span>
+<span id="cb13-51"><a aria-label="51"></a>output<span class="sc">$</span>grafiek <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb13-52"><a aria-label="52"></a>  <span class="fu">req</span>(<span class="fu">dt</span>(), <span class="fu">nrow</span>(<span class="fu">dt</span>()) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb13-53"><a aria-label="53"></a></span>
+<span id="cb13-54"><a aria-label="54"></a>  <span class="co"># 1. Pivot en bereid data voor de grafiek voor</span></span>
+<span id="cb13-55"><a aria-label="55"></a>  plot_data <span class="ot">&lt;-</span> <span class="fu">dt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb13-56"><a aria-label="56"></a>    <span class="fu">pivot_longer</span>(</span>
+<span id="cb13-57"><a aria-label="57"></a>      <span class="at">cols =</span> <span class="fu">all_of</span>(input<span class="sc">$</span>kenmerk),</span>
+<span id="cb13-58"><a aria-label="58"></a>      <span class="at">values_to =</span> <span class="st">"waarde"</span>,</span>
+<span id="cb13-59"><a aria-label="59"></a>      <span class="at">names_to =</span> <span class="st">"kenmerk"</span></span>
+<span id="cb13-60"><a aria-label="60"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb13-61"><a aria-label="61"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(waarde), waarde <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb13-62"><a aria-label="62"></a></span>
+<span id="cb13-63"><a aria-label="63"></a>  <span class="fu">req</span>(<span class="fu">nrow</span>(plot_data) <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="co"># geen grafiek als een kenmerk geen waarden heeft</span></span>
+<span id="cb13-64"><a aria-label="64"></a></span>
+<span id="cb13-65"><a aria-label="65"></a>  <span class="co"># 2. Bepaal de logica op basis van wel/geen dierselectie</span></span>
+<span id="cb13-66"><a aria-label="66"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(input<span class="sc">$</span>dieren)) {</span>
+<span id="cb13-67"><a aria-label="67"></a>    <span class="co"># GEEN DIEREN GESELECTEERD -&gt; Bereken groepsgemiddelde per dag</span></span>
+<span id="cb13-68"><a aria-label="68"></a>    plot_data <span class="ot">&lt;-</span> plot_data <span class="sc">|&gt;</span></span>
+<span id="cb13-69"><a aria-label="69"></a>      <span class="fu">group_by</span>(datum, kenmerk) <span class="sc">|&gt;</span></span>
+<span id="cb13-70"><a aria-label="70"></a>      <span class="fu">summarise</span>(<span class="at">waarde =</span> <span class="fu">mean</span>(waarde, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb13-71"><a aria-label="71"></a></span>
+<span id="cb13-72"><a aria-label="72"></a>    mapping <span class="ot">&lt;-</span> <span class="fu">aes</span>(<span class="at">x =</span> datum, <span class="at">y =</span> waarde, <span class="at">color =</span> kenmerk, <span class="at">group =</span> kenmerk)</span>
+<span id="cb13-73"><a aria-label="73"></a>    grafiek_titel <span class="ot">&lt;-</span> <span class="st">"Groepsgemiddelde over de tijd"</span></span>
+<span id="cb13-74"><a aria-label="74"></a>  } <span class="cf">else</span> {</span>
+<span id="cb13-75"><a aria-label="75"></a>    <span class="co"># WEL DIEREN GESELECTEERD -&gt; Bereken het gemiddelde PER DIER per dag</span></span>
+<span id="cb13-76"><a aria-label="76"></a>    plot_data <span class="ot">&lt;-</span> plot_data <span class="sc">|&gt;</span></span>
+<span id="cb13-77"><a aria-label="77"></a>      <span class="fu">group_by</span>(id, datum, kenmerk) <span class="sc">|&gt;</span></span>
+<span id="cb13-78"><a aria-label="78"></a>      <span class="fu">summarise</span>(<span class="at">waarde =</span> <span class="fu">mean</span>(waarde, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb13-79"><a aria-label="79"></a></span>
+<span id="cb13-80"><a aria-label="80"></a>    mapping <span class="ot">&lt;-</span> <span class="fu">aes</span>(<span class="at">x =</span> datum, <span class="at">y =</span> waarde, <span class="at">color =</span> id, <span class="at">group =</span> id)</span>
+<span id="cb13-81"><a aria-label="81"></a>    grafiek_titel <span class="ot">&lt;-</span> <span class="st">"Individueel verloop per geselecteerd dier"</span></span>
+<span id="cb13-82"><a aria-label="82"></a>  }</span>
+<span id="cb13-83"><a aria-label="83"></a></span>
+<span id="cb13-84"><a aria-label="84"></a>  <span class="co"># 3. grafiek</span></span>
+<span id="cb13-85"><a aria-label="85"></a>  <span class="fu">ggplot</span>(plot_data, mapping) <span class="sc">+</span></span>
+<span id="cb13-86"><a aria-label="86"></a>    <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.8</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb13-87"><a aria-label="87"></a>    <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb13-88"><a aria-label="88"></a>    <span class="fu">labs</span>(</span>
+<span id="cb13-89"><a aria-label="89"></a>      <span class="at">title =</span> grafiek_titel,</span>
+<span id="cb13-90"><a aria-label="90"></a>      <span class="at">x =</span> <span class="st">"Datum"</span>,</span>
+<span id="cb13-91"><a aria-label="91"></a>      <span class="at">y =</span> <span class="st">"Waarde"</span>,</span>
+<span id="cb13-92"><a aria-label="92"></a>      <span class="at">color =</span> <span class="cf">if</span> (<span class="fu">is.null</span>(input<span class="sc">$</span>dieren)) <span class="st">"Kenmerk"</span> <span class="cf">else</span> <span class="st">"Dier ID"</span></span>
+<span id="cb13-93"><a aria-label="93"></a>    ) <span class="sc">+</span></span>
+<span id="cb13-94"><a aria-label="94"></a>    <span class="co"># grafieken per kenmerk als er meerdere gekozen zijn</span></span>
+<span id="cb13-95"><a aria-label="95"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span>kenmerk, <span class="at">scales =</span> <span class="st">"free_y"</span>)</span>
+<span id="cb13-96"><a aria-label="96"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="stap-13-downloadknop" class="slide level2 scrollable">
+<h2>Stap 13: downloadknop</h2>
+<p>We willen de geselecteerde gegevens ook kunnen downloaden</p>
+<ol type="1">
+<li>Onder de selectiemenu’s verschijnt een knop <code>download</code></li>
+<li>In de <code>server</code> functie moeten de geselecteerde gegevens (<code>dt()</code>) naar de juiste knop worden gestuurd</li>
+</ol>
+<div class="codewindow r" data-chrome="windows">
+<p>code.R</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a aria-label="1"></a>inputs <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb14-2"><a aria-label="2"></a>  <span class="fu">selectInput</span>(</span>
+<span id="cb14-3"><a aria-label="3"></a>    <span class="at">inputId =</span> <span class="st">"kenmerk"</span>,</span>
+<span id="cb14-4"><a aria-label="4"></a>    <span class="at">label =</span> <span class="st">"Selecteer kenmerk(en)"</span>,</span>
+<span id="cb14-5"><a aria-label="5"></a>    <span class="at">choices =</span> km,</span>
+<span id="cb14-6"><a aria-label="6"></a>    <span class="at">selected =</span> km[<span class="dv">1</span>],</span>
+<span id="cb14-7"><a aria-label="7"></a>    <span class="at">multiple =</span> <span class="cn">TRUE</span></span>
+<span id="cb14-8"><a aria-label="8"></a>  ),</span>
+<span id="cb14-9"><a aria-label="9"></a>  <span class="fu">selectInput</span>(</span>
+<span id="cb14-10"><a aria-label="10"></a>    <span class="at">inputId =</span> <span class="st">"dieren"</span>,</span>
+<span id="cb14-11"><a aria-label="11"></a>    <span class="at">label =</span> <span class="st">"Selecteer dier(en)"</span>,</span>
+<span id="cb14-12"><a aria-label="12"></a>    <span class="at">choices =</span> <span class="fu">sort</span>(<span class="fu">unique</span>(data<span class="sc">$</span>id)),</span>
+<span id="cb14-13"><a aria-label="13"></a>    <span class="at">multiple =</span> <span class="cn">TRUE</span></span>
+<span id="cb14-14"><a aria-label="14"></a>  ),</span>
+<span id="cb14-15"><a aria-label="15"></a>  <span class="fu">sliderInput</span>(</span>
+<span id="cb14-16"><a aria-label="16"></a>    <span class="at">inputId =</span> <span class="st">'lacts'</span>,</span>
+<span id="cb14-17"><a aria-label="17"></a>    <span class="at">label =</span> <span class="st">"Laktaties:"</span>,</span>
+<span id="cb14-18"><a aria-label="18"></a>    <span class="at">min =</span> <span class="fu">min</span>(data<span class="sc">$</span>lactatie, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb14-19"><a aria-label="19"></a>    <span class="at">max =</span> <span class="fu">max</span>(data<span class="sc">$</span>lactatie, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb14-20"><a aria-label="20"></a>    <span class="at">step =</span> <span class="dv">1</span>,</span>
+<span id="cb14-21"><a aria-label="21"></a>    <span class="at">value =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb14-22"><a aria-label="22"></a>  ),</span>
+<span id="cb14-23"><a aria-label="23"></a>  <span class="fu">sliderInput</span>(</span>
+<span id="cb14-24"><a aria-label="24"></a>    <span class="at">inputId =</span> <span class="st">'dims'</span>,</span>
+<span id="cb14-25"><a aria-label="25"></a>    <span class="at">label =</span> <span class="st">"Laktatiedagen:"</span>,</span>
+<span id="cb14-26"><a aria-label="26"></a>    <span class="at">min =</span> <span class="fu">min</span>(data<span class="sc">$</span>dim, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb14-27"><a aria-label="27"></a>    <span class="at">max =</span> <span class="fu">max</span>(data<span class="sc">$</span>dim, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb14-28"><a aria-label="28"></a>    <span class="at">step =</span> <span class="dv">1</span>,</span>
+<span id="cb14-29"><a aria-label="29"></a>    <span class="at">value =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">365</span>)</span>
+<span id="cb14-30"><a aria-label="30"></a>  ),</span>
+<span id="cb14-31"><a aria-label="31"></a>  <span class="fu">hr</span>(),</span>
+<span id="cb14-32"><a aria-label="32"></a>  <span class="co"># Downloadknop</span></span>
+<span id="cb14-33"><a aria-label="33"></a>  <span class="fu">downloadButton</span>(</span>
+<span id="cb14-34"><a aria-label="34"></a>    <span class="st">"download_data"</span>,</span>
+<span id="cb14-35"><a aria-label="35"></a>    <span class="st">"Download gefilterde data"</span>,</span>
+<span id="cb14-36"><a aria-label="36"></a>    <span class="at">class =</span> <span class="st">"btn-outline-primary btn-sm w-100"</span></span>
+<span id="cb14-37"><a aria-label="37"></a>  )</span>
+<span id="cb14-38"><a aria-label="38"></a>)</span>
+<span id="cb14-39"><a aria-label="39"></a></span>
+<span id="cb14-40"><a aria-label="40"></a>server <span class="ot">=</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb14-41"><a aria-label="41"></a>  <span class="do">## .... de code van de vorige stappen</span></span>
+<span id="cb14-42"><a aria-label="42"></a></span>
+<span id="cb14-43"><a aria-label="43"></a>  <span class="co"># Download handlerfunctionaliteit</span></span>
+<span id="cb14-44"><a aria-label="44"></a>  output<span class="sc">$</span>download_data <span class="ot">&lt;-</span> <span class="fu">downloadHandler</span>(</span>
+<span id="cb14-45"><a aria-label="45"></a>    <span class="at">filename =</span> <span class="cf">function</span>() {</span>
+<span id="cb14-46"><a aria-label="46"></a>      <span class="fu">paste</span>(<span class="st">"productiedata-export-"</span>, <span class="fu">Sys.Date</span>(), <span class="st">".csv"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span>
+<span id="cb14-47"><a aria-label="47"></a>    },</span>
+<span id="cb14-48"><a aria-label="48"></a>    <span class="at">content =</span> <span class="cf">function</span>(file) {</span>
+<span id="cb14-49"><a aria-label="49"></a>      <span class="fu">write.csv</span>(<span class="fu">dt</span>(), file, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb14-50"><a aria-label="50"></a>    }</span>
+<span id="cb14-51"><a aria-label="51"></a>  )</span>
+<span id="cb14-52"><a aria-label="52"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="stap-14-layout" class="slide level2 scrollable">
+<h2>Stap 14: Layout</h2>
+<p>We willen graag een betere layout.</p>
+<ol type="1">
+<li>We kiezen een thema <code>flatly</code> voor onze app</li>
+<li>Dit geven we ook door in de tabel</li>
+<li>We kiezen thema <code>minimal</code> voor de grafiek</li>
+</ol>
+<div class="codewindow r" data-chrome="windows">
+<p>code.R</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-label="1"></a>ui <span class="ot">=</span> <span class="fu">page_navbar</span>(</span>
+<span id="cb15-2"><a aria-label="2"></a>  <span class="at">theme =</span> <span class="fu">bs_theme</span>(<span class="at">version =</span> <span class="dv">5</span>, <span class="at">bootswatch =</span> <span class="st">"flatly"</span>),</span>
+<span id="cb15-3"><a aria-label="3"></a>  <span class="do">### ...</span></span>
+<span id="cb15-4"><a aria-label="4"></a>)</span>
+<span id="cb15-5"><a aria-label="5"></a></span>
+<span id="cb15-6"><a aria-label="6"></a><span class="co"># in output$grafiek:</span></span>
+<span id="cb15-7"><a aria-label="7"></a><span class="fu">ggplot</span>(plot_data, mapping) <span class="sc">+</span></span>
+<span id="cb15-8"><a aria-label="8"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.8</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb15-9"><a aria-label="9"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb15-10"><a aria-label="10"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb15-11"><a aria-label="11"></a>  <span class="fu">labs</span>(</span>
+<span id="cb15-12"><a aria-label="12"></a>    <span class="at">title =</span> grafiek_titel,</span>
+<span id="cb15-13"><a aria-label="13"></a>    <span class="at">x =</span> <span class="st">"Datum"</span>,</span>
+<span id="cb15-14"><a aria-label="14"></a>    <span class="at">y =</span> <span class="st">"Waarde"</span>,</span>
+<span id="cb15-15"><a aria-label="15"></a>    <span class="at">color =</span> <span class="cf">if</span> (<span class="fu">is.null</span>(input<span class="sc">$</span>dieren)) <span class="st">"Kenmerk"</span> <span class="cf">else</span> <span class="st">"Dier ID"</span></span>
+<span id="cb15-16"><a aria-label="16"></a>  ) <span class="sc">+</span></span>
+<span id="cb15-17"><a aria-label="17"></a>  <span class="co"># grafieken per kenmerk als er meerdere gekozen zijn</span></span>
+<span id="cb15-18"><a aria-label="18"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>kenmerk, <span class="at">scales =</span> <span class="st">"free_y"</span>)</span>
+<span id="cb15-19"><a aria-label="19"></a></span>
+<span id="cb15-20"><a aria-label="20"></a><span class="co"># in output$tabel:</span></span>
+<span id="cb15-21"><a aria-label="21"></a>output<span class="sc">$</span>tabel <span class="ot">&lt;-</span> <span class="fu">renderDT</span>({</span>
+<span id="cb15-22"><a aria-label="22"></a>  <span class="fu">req</span>(<span class="fu">dt</span>())</span>
+<span id="cb15-23"><a aria-label="23"></a></span>
+<span id="cb15-24"><a aria-label="24"></a>  <span class="co"># Zoek de positie van de kolom 'datum' op; DT telt vanaf 0, R vanaf 1</span></span>
+<span id="cb15-25"><a aria-label="25"></a>  datum_index <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">colnames</span>(<span class="fu">dt</span>()) <span class="sc">==</span> <span class="st">"datum"</span>) <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb15-26"><a aria-label="26"></a></span>
+<span id="cb15-27"><a aria-label="27"></a>  <span class="fu">datatable</span>(</span>
+<span id="cb15-28"><a aria-label="28"></a>    <span class="fu">dt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb15-29"><a aria-label="29"></a>      <span class="fu">arrange</span>(id, datum),</span>
+<span id="cb15-30"><a aria-label="30"></a>    <span class="at">style =</span> <span class="st">"bootstrap5"</span>,</span>
+<span id="cb15-31"><a aria-label="31"></a>    <span class="at">fillContainer =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb15-32"><a aria-label="32"></a>    <span class="do">### ...</span></span>
+<span id="cb15-33"><a aria-label="33"></a>  )</span>
+<span id="cb15-34"><a aria-label="34"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="stap-15-opnieuw-de-hele-app" class="slide level2">
+<h2>Stap 15: opnieuw de hele app</h2>
+<p>We geven nu opnieuw de hele app weer:</p>
+<div class="codewindow r" data-chrome="windows">
+<p>code.R</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a aria-label="1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb16-2"><a aria-label="2"></a><span class="fu">library</span>(bslib)</span>
+<span id="cb16-3"><a aria-label="3"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb16-4"><a aria-label="4"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb16-5"><a aria-label="5"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb16-6"><a aria-label="6"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb16-7"><a aria-label="7"></a><span class="fu">library</span>(DT)</span>
+<span id="cb16-8"><a aria-label="8"></a></span>
+<span id="cb16-9"><a aria-label="9"></a>data <span class="ot">&lt;-</span> <span class="fu">read.table</span>(</span>
+<span id="cb16-10"><a aria-label="10"></a>  <span class="st">'data/productiedata.dat'</span>,</span>
+<span id="cb16-11"><a aria-label="11"></a>  <span class="at">sep =</span> <span class="st">","</span>,</span>
+<span id="cb16-12"><a aria-label="12"></a>  <span class="at">dec =</span> <span class="st">"."</span>,</span>
+<span id="cb16-13"><a aria-label="13"></a>  <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb16-14"><a aria-label="14"></a>  <span class="at">row.names =</span> <span class="dv">1</span>, <span class="do">## eerste kolom is een rijnummer</span></span>
+<span id="cb16-15"><a aria-label="15"></a>  <span class="at">na.strings =</span> <span class="st">"NA"</span></span>
+<span id="cb16-16"><a aria-label="16"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb16-17"><a aria-label="17"></a>  <span class="fu">rename</span>(<span class="at">vreettijd =</span> Totale.vreettijd.in.minuten) <span class="sc">|&gt;</span></span>
+<span id="cb16-18"><a aria-label="18"></a>  <span class="fu">rename_with</span>(tolower) <span class="sc">|&gt;</span></span>
+<span id="cb16-19"><a aria-label="19"></a>  <span class="fu">mutate</span>(<span class="at">datum =</span> <span class="fu">ymd</span>(datum)) <span class="sc">|&gt;</span> <span class="do">## zorg dat datum goed staat</span></span>
+<span id="cb16-20"><a aria-label="20"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">factor</span>(id)) <span class="do">## id moet een factor zijn</span></span>
+<span id="cb16-21"><a aria-label="21"></a></span>
+<span id="cb16-22"><a aria-label="22"></a>bkv <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"datum"</span>, <span class="st">"id"</span>, <span class="st">"lactatie"</span>, <span class="st">"dim"</span>, <span class="st">"productie"</span>) <span class="co"># lijstje met vaste variabelen</span></span>
+<span id="cb16-23"><a aria-label="23"></a>km <span class="ot">&lt;-</span> <span class="fu">colnames</span>(data)[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)] <span class="do">## de andere variabelen, kenmerken waaruit we kunnen kiezen</span></span>
+<span id="cb16-24"><a aria-label="24"></a></span>
+<span id="cb16-25"><a aria-label="25"></a>inputs <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb16-26"><a aria-label="26"></a>  <span class="fu">selectInput</span>(</span>
+<span id="cb16-27"><a aria-label="27"></a>    <span class="at">inputId =</span> <span class="st">"kenmerk"</span>,</span>
+<span id="cb16-28"><a aria-label="28"></a>    <span class="at">label =</span> <span class="st">"Selecteer kenmerk(en)"</span>,</span>
+<span id="cb16-29"><a aria-label="29"></a>    <span class="at">choices =</span> km,</span>
+<span id="cb16-30"><a aria-label="30"></a>    <span class="at">selected =</span> km[<span class="dv">1</span>],</span>
+<span id="cb16-31"><a aria-label="31"></a>    <span class="at">multiple =</span> <span class="cn">TRUE</span></span>
+<span id="cb16-32"><a aria-label="32"></a>  ),</span>
+<span id="cb16-33"><a aria-label="33"></a>  <span class="fu">selectInput</span>(</span>
+<span id="cb16-34"><a aria-label="34"></a>    <span class="at">inputId =</span> <span class="st">"dieren"</span>,</span>
+<span id="cb16-35"><a aria-label="35"></a>    <span class="at">label =</span> <span class="st">"Selecteer dier(en)"</span>,</span>
+<span id="cb16-36"><a aria-label="36"></a>    <span class="at">choices =</span> <span class="fu">sort</span>(<span class="fu">unique</span>(data<span class="sc">$</span>id)),</span>
+<span id="cb16-37"><a aria-label="37"></a>    <span class="at">multiple =</span> <span class="cn">TRUE</span></span>
+<span id="cb16-38"><a aria-label="38"></a>  ),</span>
+<span id="cb16-39"><a aria-label="39"></a>  <span class="fu">sliderInput</span>(</span>
+<span id="cb16-40"><a aria-label="40"></a>    <span class="at">inputId =</span> <span class="st">'lacts'</span>,</span>
+<span id="cb16-41"><a aria-label="41"></a>    <span class="at">label =</span> <span class="st">"Laktaties:"</span>,</span>
+<span id="cb16-42"><a aria-label="42"></a>    <span class="at">min =</span> <span class="fu">min</span>(data<span class="sc">$</span>lactatie, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb16-43"><a aria-label="43"></a>    <span class="at">max =</span> <span class="fu">max</span>(data<span class="sc">$</span>lactatie, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb16-44"><a aria-label="44"></a>    <span class="at">step =</span> <span class="dv">1</span>,</span>
+<span id="cb16-45"><a aria-label="45"></a>    <span class="at">value =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb16-46"><a aria-label="46"></a>  ),</span>
+<span id="cb16-47"><a aria-label="47"></a>  <span class="fu">sliderInput</span>(</span>
+<span id="cb16-48"><a aria-label="48"></a>    <span class="at">inputId =</span> <span class="st">'dims'</span>,</span>
+<span id="cb16-49"><a aria-label="49"></a>    <span class="at">label =</span> <span class="st">"Laktatiedagen:"</span>,</span>
+<span id="cb16-50"><a aria-label="50"></a>    <span class="at">min =</span> <span class="fu">min</span>(data<span class="sc">$</span>dim, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb16-51"><a aria-label="51"></a>    <span class="at">max =</span> <span class="fu">max</span>(data<span class="sc">$</span>dim, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb16-52"><a aria-label="52"></a>    <span class="at">step =</span> <span class="dv">1</span>,</span>
+<span id="cb16-53"><a aria-label="53"></a>    <span class="at">value =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">365</span>)</span>
+<span id="cb16-54"><a aria-label="54"></a>  ),</span>
+<span id="cb16-55"><a aria-label="55"></a>  <span class="fu">hr</span>(),</span>
+<span id="cb16-56"><a aria-label="56"></a>  <span class="co"># Downloadknop</span></span>
+<span id="cb16-57"><a aria-label="57"></a>  <span class="fu">downloadButton</span>(</span>
+<span id="cb16-58"><a aria-label="58"></a>    <span class="st">"download_data"</span>,</span>
+<span id="cb16-59"><a aria-label="59"></a>    <span class="st">"Download gefilterde data"</span>,</span>
+<span id="cb16-60"><a aria-label="60"></a>    <span class="at">class =</span> <span class="st">"btn-outline-primary btn-sm w-100"</span></span>
+<span id="cb16-61"><a aria-label="61"></a>  )</span>
+<span id="cb16-62"><a aria-label="62"></a>)</span>
+<span id="cb16-63"><a aria-label="63"></a></span>
+<span id="cb16-64"><a aria-label="64"></a>cards <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb16-65"><a aria-label="65"></a>  <span class="co"># Waarde-boxen voor snelle statistieken bovenaan</span></span>
+<span id="cb16-66"><a aria-label="66"></a>  <span class="fu">layout_column_wrap</span>(</span>
+<span id="cb16-67"><a aria-label="67"></a>    <span class="at">width =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>,</span>
+<span id="cb16-68"><a aria-label="68"></a>    <span class="fu">value_box</span>(</span>
+<span id="cb16-69"><a aria-label="69"></a>      <span class="at">title =</span> <span class="st">"Geselecteerde Rijen"</span>,</span>
+<span id="cb16-70"><a aria-label="70"></a>      <span class="at">value =</span> tags<span class="sc">$</span><span class="fu">span</span>(</span>
+<span id="cb16-71"><a aria-label="71"></a>        <span class="fu">textOutput</span>(<span class="st">"stat_rijen"</span>),</span>
+<span id="cb16-72"><a aria-label="72"></a>        <span class="at">style =</span> <span class="st">"font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: bold;"</span></span>
+<span id="cb16-73"><a aria-label="73"></a>      ),</span>
+<span id="cb16-74"><a aria-label="74"></a>      <span class="at">showcase =</span> shiny<span class="sc">::</span><span class="fu">icon</span>(<span class="st">"database"</span>),</span>
+<span id="cb16-75"><a aria-label="75"></a>      <span class="at">theme =</span> <span class="st">"primary"</span></span>
+<span id="cb16-76"><a aria-label="76"></a>    ),</span>
+<span id="cb16-77"><a aria-label="77"></a>    <span class="fu">value_box</span>(</span>
+<span id="cb16-78"><a aria-label="78"></a>      <span class="at">title =</span> <span class="st">"Geselecteerde Dieren"</span>,</span>
+<span id="cb16-79"><a aria-label="79"></a>      <span class="at">value =</span> tags<span class="sc">$</span><span class="fu">span</span>(</span>
+<span id="cb16-80"><a aria-label="80"></a>        <span class="fu">textOutput</span>(<span class="st">"stat_dieren"</span>),</span>
+<span id="cb16-81"><a aria-label="81"></a>        <span class="at">style =</span> <span class="st">"font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: bold;"</span></span>
+<span id="cb16-82"><a aria-label="82"></a>      ),</span>
+<span id="cb16-83"><a aria-label="83"></a>      <span class="at">showcase =</span> shiny<span class="sc">::</span><span class="fu">icon</span>(<span class="st">"cow"</span>),</span>
+<span id="cb16-84"><a aria-label="84"></a>      <span class="at">theme =</span> <span class="st">"teal"</span></span>
+<span id="cb16-85"><a aria-label="85"></a>    )</span>
+<span id="cb16-86"><a aria-label="86"></a>  ),</span>
+<span id="cb16-87"><a aria-label="87"></a></span>
+<span id="cb16-88"><a aria-label="88"></a>  <span class="fu">card</span>(</span>
+<span id="cb16-89"><a aria-label="89"></a>    <span class="at">full_screen =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb16-90"><a aria-label="90"></a>    <span class="fu">card_header</span>(<span class="st">"Kenmerken over de tijd"</span>),</span>
+<span id="cb16-91"><a aria-label="91"></a>    <span class="fu">card_body</span>(<span class="fu">plotOutput</span>(<span class="st">"grafiek"</span>))</span>
+<span id="cb16-92"><a aria-label="92"></a>  ),</span>
+<span id="cb16-93"><a aria-label="93"></a>  <span class="fu">card</span>(</span>
+<span id="cb16-94"><a aria-label="94"></a>    <span class="at">full_screen =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb16-95"><a aria-label="95"></a>    <span class="fu">card_header</span>(<span class="st">"Tabel van de gegevens"</span>),</span>
+<span id="cb16-96"><a aria-label="96"></a>    <span class="fu">card_body</span>(<span class="at">fillable =</span> <span class="cn">TRUE</span>, <span class="fu">DTOutput</span>(<span class="st">"tabel"</span>))</span>
+<span id="cb16-97"><a aria-label="97"></a>  )</span>
+<span id="cb16-98"><a aria-label="98"></a>)</span>
+<span id="cb16-99"><a aria-label="99"></a></span>
+<span id="cb16-100"><a aria-label="100"></a>ui <span class="ot">=</span> <span class="fu">page_navbar</span>(</span>
+<span id="cb16-101"><a aria-label="101"></a>  <span class="at">theme =</span> <span class="fu">bs_theme</span>(<span class="at">version =</span> <span class="dv">5</span>, <span class="at">bootswatch =</span> <span class="st">"flatly"</span>),</span>
+<span id="cb16-102"><a aria-label="102"></a>  <span class="at">title =</span> <span class="st">"Analyse productiedata"</span>,</span>
+<span id="cb16-103"><a aria-label="103"></a>  <span class="at">sidebar =</span> <span class="fu">sidebar</span>(inputs),</span>
+<span id="cb16-104"><a aria-label="104"></a></span>
+<span id="cb16-105"><a aria-label="105"></a>  <span class="fu">nav_panel</span>(</span>
+<span id="cb16-106"><a aria-label="106"></a>    <span class="at">title =</span> <span class="st">"Dashboard"</span>,</span>
+<span id="cb16-107"><a aria-label="107"></a>    <span class="sc">!!!</span>cards</span>
+<span id="cb16-108"><a aria-label="108"></a>  )</span>
+<span id="cb16-109"><a aria-label="109"></a>)</span>
+<span id="cb16-110"><a aria-label="110"></a></span>
+<span id="cb16-111"><a aria-label="111"></a>server <span class="ot">=</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb16-112"><a aria-label="112"></a>  dt <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb16-113"><a aria-label="113"></a>    <span class="fu">req</span>(input<span class="sc">$</span>lacts, input<span class="sc">$</span>dims, input<span class="sc">$</span>kenmerk)</span>
+<span id="cb16-114"><a aria-label="114"></a></span>
+<span id="cb16-115"><a aria-label="115"></a>    <span class="co"># Dynamisch bepalen welke kolommen we behouden (bkv + geselecteerde kenmerken)</span></span>
+<span id="cb16-116"><a aria-label="116"></a>    geselecteerde_kolommen <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">c</span>(bkv, input<span class="sc">$</span>kenmerk))</span>
+<span id="cb16-117"><a aria-label="117"></a></span>
+<span id="cb16-118"><a aria-label="118"></a>    data <span class="sc">|&gt;</span></span>
+<span id="cb16-119"><a aria-label="119"></a>      <span class="fu">filter</span>(</span>
+<span id="cb16-120"><a aria-label="120"></a>        productie <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
+<span id="cb16-121"><a aria-label="121"></a>        lactatie <span class="sc">&gt;=</span> input<span class="sc">$</span>lacts[<span class="dv">1</span>],</span>
+<span id="cb16-122"><a aria-label="122"></a>        lactatie <span class="sc">&lt;=</span> input<span class="sc">$</span>lacts[<span class="dv">2</span>],</span>
+<span id="cb16-123"><a aria-label="123"></a>        dim <span class="sc">&gt;=</span> input<span class="sc">$</span>dims[<span class="dv">1</span>],</span>
+<span id="cb16-124"><a aria-label="124"></a>        dim <span class="sc">&lt;=</span> input<span class="sc">$</span>dims[<span class="dv">2</span>],</span>
+<span id="cb16-125"><a aria-label="125"></a>        <span class="fu">is.null</span>(input<span class="sc">$</span>dieren) <span class="sc">|</span> id <span class="sc">%in%</span> input<span class="sc">$</span>dieren <span class="co"># geen dieren gekozen: alle dieren</span></span>
+<span id="cb16-126"><a aria-label="126"></a>      ) <span class="sc">|&gt;</span></span>
+<span id="cb16-127"><a aria-label="127"></a>      <span class="fu">select</span>(<span class="fu">all_of</span>(geselecteerde_kolommen))</span>
+<span id="cb16-128"><a aria-label="128"></a>  })</span>
+<span id="cb16-129"><a aria-label="129"></a></span>
+<span id="cb16-130"><a aria-label="130"></a>  output<span class="sc">$</span>grafiek <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb16-131"><a aria-label="131"></a>    <span class="fu">req</span>(<span class="fu">dt</span>(), <span class="fu">nrow</span>(<span class="fu">dt</span>()) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb16-132"><a aria-label="132"></a></span>
+<span id="cb16-133"><a aria-label="133"></a>    <span class="co"># 1. Pivot en bereid data voor de grafiek voor</span></span>
+<span id="cb16-134"><a aria-label="134"></a>    plot_data <span class="ot">&lt;-</span> <span class="fu">dt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb16-135"><a aria-label="135"></a>      <span class="fu">pivot_longer</span>(</span>
+<span id="cb16-136"><a aria-label="136"></a>        <span class="at">cols =</span> <span class="fu">all_of</span>(input<span class="sc">$</span>kenmerk),</span>
+<span id="cb16-137"><a aria-label="137"></a>        <span class="at">values_to =</span> <span class="st">"waarde"</span>,</span>
+<span id="cb16-138"><a aria-label="138"></a>        <span class="at">names_to =</span> <span class="st">"kenmerk"</span></span>
+<span id="cb16-139"><a aria-label="139"></a>      ) <span class="sc">|&gt;</span></span>
+<span id="cb16-140"><a aria-label="140"></a>      <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(waarde), waarde <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb16-141"><a aria-label="141"></a></span>
+<span id="cb16-142"><a aria-label="142"></a>    <span class="fu">req</span>(<span class="fu">nrow</span>(plot_data) <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="co"># geen grafiek als een kenmerk geen waarden heeft</span></span>
+<span id="cb16-143"><a aria-label="143"></a></span>
+<span id="cb16-144"><a aria-label="144"></a>    <span class="co"># 2. Bepaal de logica op basis van wel/geen dierselectie</span></span>
+<span id="cb16-145"><a aria-label="145"></a>    <span class="cf">if</span> (<span class="fu">is.null</span>(input<span class="sc">$</span>dieren)) {</span>
+<span id="cb16-146"><a aria-label="146"></a>      <span class="co"># GEEN DIEREN GESELECTEERD -&gt; Bereken groepsgemiddelde per dag</span></span>
+<span id="cb16-147"><a aria-label="147"></a>      plot_data <span class="ot">&lt;-</span> plot_data <span class="sc">|&gt;</span></span>
+<span id="cb16-148"><a aria-label="148"></a>        <span class="fu">group_by</span>(datum, kenmerk) <span class="sc">|&gt;</span></span>
+<span id="cb16-149"><a aria-label="149"></a>        <span class="fu">summarise</span>(<span class="at">waarde =</span> <span class="fu">mean</span>(waarde, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb16-150"><a aria-label="150"></a></span>
+<span id="cb16-151"><a aria-label="151"></a>      mapping <span class="ot">&lt;-</span> <span class="fu">aes</span>(<span class="at">x =</span> datum, <span class="at">y =</span> waarde, <span class="at">color =</span> kenmerk, <span class="at">group =</span> kenmerk)</span>
+<span id="cb16-152"><a aria-label="152"></a>      grafiek_titel <span class="ot">&lt;-</span> <span class="st">"Groepsgemiddelde over de tijd"</span></span>
+<span id="cb16-153"><a aria-label="153"></a>    } <span class="cf">else</span> {</span>
+<span id="cb16-154"><a aria-label="154"></a>      <span class="co"># WEL DIEREN GESELECTEERD -&gt; Bereken het gemiddelde PER DIER per dag</span></span>
+<span id="cb16-155"><a aria-label="155"></a>      plot_data <span class="ot">&lt;-</span> plot_data <span class="sc">|&gt;</span></span>
+<span id="cb16-156"><a aria-label="156"></a>        <span class="fu">group_by</span>(id, datum, kenmerk) <span class="sc">|&gt;</span></span>
+<span id="cb16-157"><a aria-label="157"></a>        <span class="fu">summarise</span>(<span class="at">waarde =</span> <span class="fu">mean</span>(waarde, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb16-158"><a aria-label="158"></a></span>
+<span id="cb16-159"><a aria-label="159"></a>      mapping <span class="ot">&lt;-</span> <span class="fu">aes</span>(<span class="at">x =</span> datum, <span class="at">y =</span> waarde, <span class="at">color =</span> id, <span class="at">group =</span> id)</span>
+<span id="cb16-160"><a aria-label="160"></a>      grafiek_titel <span class="ot">&lt;-</span> <span class="st">"Individueel verloop per geselecteerd dier"</span></span>
+<span id="cb16-161"><a aria-label="161"></a>    }</span>
+<span id="cb16-162"><a aria-label="162"></a></span>
+<span id="cb16-163"><a aria-label="163"></a>    <span class="co"># 3. grafiek</span></span>
+<span id="cb16-164"><a aria-label="164"></a>    <span class="fu">ggplot</span>(plot_data, mapping) <span class="sc">+</span></span>
+<span id="cb16-165"><a aria-label="165"></a>      <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.8</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb16-166"><a aria-label="166"></a>      <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb16-167"><a aria-label="167"></a>      <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb16-168"><a aria-label="168"></a>      <span class="fu">labs</span>(</span>
+<span id="cb16-169"><a aria-label="169"></a>        <span class="at">title =</span> grafiek_titel,</span>
+<span id="cb16-170"><a aria-label="170"></a>        <span class="at">x =</span> <span class="st">"Datum"</span>,</span>
+<span id="cb16-171"><a aria-label="171"></a>        <span class="at">y =</span> <span class="st">"Waarde"</span>,</span>
+<span id="cb16-172"><a aria-label="172"></a>        <span class="at">color =</span> <span class="cf">if</span> (<span class="fu">is.null</span>(input<span class="sc">$</span>dieren)) <span class="st">"Kenmerk"</span> <span class="cf">else</span> <span class="st">"Dier ID"</span></span>
+<span id="cb16-173"><a aria-label="173"></a>      ) <span class="sc">+</span></span>
+<span id="cb16-174"><a aria-label="174"></a>      <span class="co"># grafieken per kenmerk als er meerdere gekozen zijn</span></span>
+<span id="cb16-175"><a aria-label="175"></a>      <span class="fu">facet_wrap</span>(<span class="sc">~</span>kenmerk, <span class="at">scales =</span> <span class="st">"free_y"</span>)</span>
+<span id="cb16-176"><a aria-label="176"></a>  })</span>
+<span id="cb16-177"><a aria-label="177"></a></span>
+<span id="cb16-178"><a aria-label="178"></a>  <span class="co"># DataTable output genereren binnen de bslib card</span></span>
+<span id="cb16-179"><a aria-label="179"></a>  output<span class="sc">$</span>tabel <span class="ot">&lt;-</span> <span class="fu">renderDT</span>({</span>
+<span id="cb16-180"><a aria-label="180"></a>    <span class="fu">req</span>(<span class="fu">dt</span>())</span>
+<span id="cb16-181"><a aria-label="181"></a></span>
+<span id="cb16-182"><a aria-label="182"></a>    <span class="co"># Zoek de positie van de kolom 'datum' op; DT telt vanaf 0, R vanaf 1</span></span>
+<span id="cb16-183"><a aria-label="183"></a>    datum_index <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">colnames</span>(<span class="fu">dt</span>()) <span class="sc">==</span> <span class="st">"datum"</span>) <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb16-184"><a aria-label="184"></a></span>
+<span id="cb16-185"><a aria-label="185"></a>    <span class="fu">datatable</span>(</span>
+<span id="cb16-186"><a aria-label="186"></a>      <span class="fu">dt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb16-187"><a aria-label="187"></a>        <span class="fu">arrange</span>(id, datum),</span>
+<span id="cb16-188"><a aria-label="188"></a>      <span class="at">style =</span> <span class="st">"bootstrap5"</span>,</span>
+<span id="cb16-189"><a aria-label="189"></a>      <span class="at">fillContainer =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb16-190"><a aria-label="190"></a>      <span class="at">rownames =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb16-191"><a aria-label="191"></a>      <span class="at">options =</span> <span class="fu">list</span>(</span>
+<span id="cb16-192"><a aria-label="192"></a>        <span class="at">pageLength =</span> <span class="dv">10</span>,</span>
+<span id="cb16-193"><a aria-label="193"></a>        <span class="at">dom =</span> <span class="st">'ltp'</span>,</span>
+<span id="cb16-194"><a aria-label="194"></a>        <span class="at">autoWidth =</span> <span class="cn">TRUE</span>, <span class="co"># Verplicht om handmatige breedtes toe te staan</span></span>
+<span id="cb16-195"><a aria-label="195"></a>        <span class="at">columnDefs =</span> <span class="fu">list</span>(</span>
+<span id="cb16-196"><a aria-label="196"></a>          <span class="fu">list</span>(</span>
+<span id="cb16-197"><a aria-label="197"></a>            <span class="at">targets =</span> datum_index, <span class="co"># De index van de datumkolom</span></span>
+<span id="cb16-198"><a aria-label="198"></a>            <span class="at">width =</span> <span class="st">'150px'</span>,       <span class="co"># Pas dit getal aan om hem breder of smaller te maken</span></span>
+<span id="cb16-199"><a aria-label="199"></a>            <span class="at">className =</span> <span class="st">'dt-left'</span>  <span class="co"># Zorgt dat de datum netjes links uitlijnt</span></span>
+<span id="cb16-200"><a aria-label="200"></a>          )</span>
+<span id="cb16-201"><a aria-label="201"></a>        )</span>
+<span id="cb16-202"><a aria-label="202"></a>      )</span>
+<span id="cb16-203"><a aria-label="203"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb16-204"><a aria-label="204"></a>      <span class="co"># Formatteer de datumkolom naar Nederlands formaat (DD-MM-YYYY)</span></span>
+<span id="cb16-205"><a aria-label="205"></a>      <span class="fu">formatDate</span>(</span>
+<span id="cb16-206"><a aria-label="206"></a>        <span class="at">columns =</span> <span class="st">"datum"</span>,</span>
+<span id="cb16-207"><a aria-label="207"></a>        <span class="at">method =</span> <span class="st">"toLocaleDateString"</span>,</span>
+<span id="cb16-208"><a aria-label="208"></a>        <span class="at">params =</span> <span class="fu">list</span>(</span>
+<span id="cb16-209"><a aria-label="209"></a>          <span class="at">locales =</span> <span class="st">"nl-NL"</span>,</span>
+<span id="cb16-210"><a aria-label="210"></a>          <span class="at">options =</span> <span class="fu">list</span>(</span>
+<span id="cb16-211"><a aria-label="211"></a>            <span class="at">year =</span> <span class="st">"numeric"</span>,</span>
+<span id="cb16-212"><a aria-label="212"></a>            <span class="at">month =</span> <span class="st">"2-digit"</span>,</span>
+<span id="cb16-213"><a aria-label="213"></a>            <span class="at">day =</span> <span class="st">"2-digit"</span>,</span>
+<span id="cb16-214"><a aria-label="214"></a>            <span class="at">timeZone =</span> <span class="st">"UTC"</span> <span class="co"># datum is UTC; voorkomt een dag verschuiving in andere tijdzones</span></span>
+<span id="cb16-215"><a aria-label="215"></a>          )</span>
+<span id="cb16-216"><a aria-label="216"></a>        )</span>
+<span id="cb16-217"><a aria-label="217"></a>      )</span>
+<span id="cb16-218"><a aria-label="218"></a>  })</span>
+<span id="cb16-219"><a aria-label="219"></a></span>
+<span id="cb16-220"><a aria-label="220"></a>  <span class="co"># Statistiek 1: aantal rijen</span></span>
+<span id="cb16-221"><a aria-label="221"></a>  output<span class="sc">$</span>stat_rijen <span class="ot">&lt;-</span> <span class="fu">renderText</span>({ <span class="fu">nrow</span>(<span class="fu">dt</span>()) })</span>
+<span id="cb16-222"><a aria-label="222"></a></span>
+<span id="cb16-223"><a aria-label="223"></a>  <span class="co"># Statistiek 2: aantal unieke dieren in selectie</span></span>
+<span id="cb16-224"><a aria-label="224"></a>  output<span class="sc">$</span>stat_dieren <span class="ot">&lt;-</span> <span class="fu">renderText</span>({ <span class="fu">n_distinct</span>(<span class="fu">dt</span>()<span class="sc">$</span>id) })</span>
+<span id="cb16-225"><a aria-label="225"></a></span>
+<span id="cb16-226"><a aria-label="226"></a>  <span class="co"># Download handlerfunctionaliteit</span></span>
+<span id="cb16-227"><a aria-label="227"></a>  output<span class="sc">$</span>download_data <span class="ot">&lt;-</span> <span class="fu">downloadHandler</span>(</span>
+<span id="cb16-228"><a aria-label="228"></a>    <span class="at">filename =</span> <span class="cf">function</span>() {</span>
+<span id="cb16-229"><a aria-label="229"></a>      <span class="fu">paste</span>(<span class="st">"productiedata-export-"</span>, <span class="fu">Sys.Date</span>(), <span class="st">".csv"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span>
+<span id="cb16-230"><a aria-label="230"></a>    },</span>
+<span id="cb16-231"><a aria-label="231"></a>    <span class="at">content =</span> <span class="cf">function</span>(file) {</span>
+<span id="cb16-232"><a aria-label="232"></a>      <span class="fu">write.csv</span>(<span class="fu">dt</span>(), file, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-233"><a aria-label="233"></a>    }</span>
+<span id="cb16-234"><a aria-label="234"></a>  )</span>
+<span id="cb16-235"><a aria-label="235"></a>}</span>
+<span id="cb16-236"><a aria-label="236"></a></span>
+<span id="cb16-237"><a aria-label="237"></a><span class="fu">shinyApp</span>(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="stap-16-publiceer-je-app" class="slide level2 scrollable">
+<h2>Stap 16: Publiceer je app</h2>
+<p>De app werkt nu, maar alleen lokaal. Je kunt de app ook online publiceren. Dit behandelen we niet in deze cursus. Je hebt de volgende mogelijkheden:</p>
+<ol type="1">
+<li>Deel de code van je app met anderen, die kunnen de code op hun pc uitvoeren</li>
+<li>Je kunt je app ook via een hosting site zoals <a href="https://github.com/">www.github.com</a> delen. Anderen kunnen de app dan direct vanaf GitHub uitvoeren met de code <code>runGitHub("naamvanjerepo", "jegithubnaam")</code>, bijvoorbeeld <code>runGitHub( "costerAnalytics/wsappproductie", "albartcoster")</code> (ik weet niet of dit werkt als je niet ingelogd bent)</li>
+<li>Er zijn ook diensten waarop je je app kunt delen zodat hij via het web toegankelijk is. De eenvoudigste is <a href="https://www.shinyapps.io/">shinyapps.io</a></li>
+<li>Er zijn ook nog andere mogelijkheden, die benutten wij voor het publiceren van onze apps.</li>
+</ol>
 
 
 </section>
