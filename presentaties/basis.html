@@ -100,7 +100,8 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-6737a0fb2db09498101b110860bd3293.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-69867d1cfc68591aaf274bc2c0541ab3.css">
+  <link rel="stylesheet" href="password.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -208,85 +209,136 @@
 </section>
 <section id="wat-is-r" class="slide level2">
 <h2>Wat is R</h2>
-<p>R is een open-source programmeertaal en softwareomgeving voor statistische berekeningen, datamanipulatie en datavisualisatie</p>
-<p>We gebruiken R, maar werken in Rstudio</p>
+<p>R is een open-source programmeertaal en softwareomgeving voor statistische berekeningen, datamanipulatie en datavisualisatie.</p>
+<p>We gebruiken R, maar werken in RStudio.</p>
 </section>
 <section id="rstudio" class="slide level2">
-<h2>Rstudio</h2>
+<h2>RStudio</h2>
 
-<img data-src="beelden/rstudio.png" class="r-stretch quarto-figure-center"><p class="caption">Screenshot van Rstudio</p></section>
-<section id="werkmap-en-bronbestanden" class="slide level2">
-<h2>Werkmap en bronbestanden</h2>
-<p>De werkmap is de map waarin R als eerste zoekt voor bestanden. Je stelt de werkmap in met de knop <code>Session/Set Working Directory/To Source File location</code> (of een andere keus)</p>
-
-<img data-src="beelden/werkmap.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Werkmap instellen</p></section>
+<img data-src="beelden/rstudio.png" class="r-stretch quarto-figure-center"><p class="caption">Screenshot van RStudio</p></section>
 <section id="projecten" class="slide level2">
 <h2>Projecten</h2>
-<p>Het is verstandig om in projecten te werken. In dit geval maken we project <code>rworkshop</code>. Bij aanmaken van dit project maakt R een nieuwe map genaamd <code>rworkshop</code> aan, en plaatst daar het bestand <code>rworkshop.Rproj</code> in. Bij aanklikken van dit bestand opent Rstudio in de juiste werkmap</p>
+<p>Het is verstandig om in projecten te werken. In dit geval maken we project <code>rworkshop</code>. Bij het aanmaken van dit project maakt RStudio een nieuwe map <code>rworkshop</code> aan, en plaatst daar het bestand <code>rworkshop.Rproj</code> in. Als je dit bestand aanklikt, opent RStudio meteen in de juiste werkmap.</p>
 
 <img data-src="beelden/project.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Projecten</p></section>
+<section id="werkmap" class="slide level2">
+<h2>Werkmap</h2>
+<p>De werkmap is de map waarin R als eerste zoekt naar bestanden. Werk je in een project, dan is de werkmap automatisch goed ingesteld.</p>
+<p>Werk je zonder project, dan stel je de werkmap in met <code>Session/Set Working Directory/To Source File Location</code> (of een andere keus).</p>
+
+<img data-src="beelden/werkmap.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Werkmap instellen</p></section>
 <section id="bronbestanden" class="slide level2">
 <h2>Bronbestanden</h2>
-<p>R werkt voor je als je opdrachten die code ingeeft. Deze code kan in de console ingegeven worden, maar het is verstandiger om code in een bronbestand te schrijven. Maak hiervoor een nieuw .R bestand aan in je werkmap. In dit bestand kun je R code schrijven en R kan het bestand vervolgens uitvoeren</p>
+<p>Je geeft R opdrachten in de vorm van code. Deze code kun je in de console intypen, maar het is verstandiger om code in een bronbestand te schrijven. Maak hiervoor een nieuw <code>.R</code> bestand aan in je werkmap. In dit bestand schrijf je R code, en R kan het bestand vervolgens uitvoeren.</p>
+<ul>
+<li>Voer één regel of een selectie uit met <code>Ctrl + Enter</code></li>
+<li>Regels die beginnen met <code>#</code> zijn <em>commentaar</em>: R slaat ze over</li>
+</ul>
 
 <img data-src="beelden/bronbestanden.png" class="r-stretch quarto-figure-center"><p class="caption">Bronbestanden</p></section>
 <section id="basisbegrippen-in-r" class="slide level2">
 <h2>Basisbegrippen in R</h2>
 <ul>
-<li>R is <em>case sensitive</em>, hoofdletters en kleine letters maken uit</li>
-<li>R werkt met <em>objecten</em>. We maken objecten met de <code>&lt;-</code> operator, en kunnen met de objecten werken</li>
-<li>Objecten hebben een type: <code>numeric</code>, <code>character</code>, <code>factor</code>:</li>
+<li>R is <em>case sensitive</em>: hoofdletters en kleine letters maken uit</li>
+<li>R werkt met <em>objecten</em>. We maken objecten met de <code>&lt;-</code> operator, en kunnen daarna met de objecten werken</li>
 </ul>
 <div class="codewindow r" data-chrome="windows">
 <p>code.R</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb1-2"><a aria-label="2"></a>b <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb1-3"><a aria-label="3"></a>c <span class="ot">&lt;-</span> a <span class="sc">+</span> b</span>
-<span id="cb1-4"><a aria-label="4"></a>c</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a><span class="co"># Rekenen met getallen</span></span>
+<span id="cb1-2"><a aria-label="2"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb1-3"><a aria-label="3"></a>b <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb1-4"><a aria-label="4"></a>totaal <span class="ot">&lt;-</span> a <span class="sc">+</span> b</span>
+<span id="cb1-5"><a aria-label="5"></a>totaal</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-label="1"></a>d <span class="ot">&lt;-</span> a<span class="sc">/</span><span class="dv">2</span></span>
-<span id="cb3-2"><a aria-label="2"></a>d</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-label="1"></a>half <span class="ot">&lt;-</span> a <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb3-2"><a aria-label="2"></a>half</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.5</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a aria-label="1"></a>e <span class="ot">&lt;-</span> a<span class="sc">*</span>b <span class="sc">+</span> c</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a aria-label="1"></a>e <span class="ot">&lt;-</span> a <span class="sc">*</span> b <span class="sc">+</span> totaal</span>
 <span id="cb5-2"><a aria-label="2"></a>e</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a aria-label="1"></a>naam <span class="ot">&lt;-</span> <span class="st">'Albart'</span></span>
-<span id="cb7-2"><a aria-label="2"></a>achternaam <span class="ot">&lt;-</span> <span class="st">'Coster'</span></span>
-<span id="cb7-3"><a aria-label="3"></a>vnaam <span class="ot">&lt;-</span> <span class="fu">paste</span>(naam,achternaam)</span>
-<span id="cb7-4"><a aria-label="4"></a>vnaam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a aria-label="1"></a><span class="co"># Werken met tekst</span></span>
+<span id="cb7-2"><a aria-label="2"></a>naam <span class="ot">&lt;-</span> <span class="st">'Albart'</span></span>
+<span id="cb7-3"><a aria-label="3"></a>achternaam <span class="ot">&lt;-</span> <span class="st">'Coster'</span></span>
+<span id="cb7-4"><a aria-label="4"></a>vnaam <span class="ot">&lt;-</span> <span class="fu">paste</span>(naam, achternaam)</span>
+<span id="cb7-5"><a aria-label="5"></a>vnaam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Albart Coster"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a aria-label="1"></a>geen <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="typen-objecten" class="slide level2">
+<h2>Typen objecten</h2>
+<p>Objecten hebben een type. De belangrijkste zijn <code>numeric</code>, <code>character</code>, <code>logical</code> en <code>factor</code>. Met <code>class()</code> zie je het type.</p>
+<div class="codewindow r" data-chrome="windows">
+<p>code.R</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a aria-label="1"></a><span class="fu">class</span>(totaal)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "numeric"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a aria-label="1"></a><span class="fu">class</span>(vnaam)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "character"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-label="1"></a><span class="co"># logical: TRUE of FALSE, vaak het resultaat van een vergelijking</span></span>
+<span id="cb13-2"><a aria-label="2"></a>groot <span class="ot">&lt;-</span> totaal <span class="sc">&gt;</span> <span class="dv">2</span></span>
+<span id="cb13-3"><a aria-label="3"></a>groot</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-label="1"></a><span class="fu">class</span>(groot)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "logical"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a aria-label="1"></a><span class="co"># factor: tekst met een vast aantal categorieën</span></span>
+<span id="cb17-2"><a aria-label="2"></a>ras <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">'HF'</span>, <span class="st">'Jersey'</span>, <span class="st">'HF'</span>))</span>
+<span id="cb17-3"><a aria-label="3"></a>ras</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] HF     Jersey HF    
+Levels: HF Jersey</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a aria-label="1"></a><span class="fu">levels</span>(ras)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "HF"     "Jersey"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a aria-label="1"></a><span class="co"># NA betekent: ontbrekende waarde</span></span>
+<span id="cb21-2"><a aria-label="2"></a>geen <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb21-3"><a aria-label="3"></a><span class="fu">is.na</span>(geen)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
 </div>
 </div>
 </section>
 <section id="datastructuren-in-r" class="slide level2">
 <h2>Datastructuren in R</h2>
 <ul>
-<li>Vorige objecten bevatten één element</li>
-<li>In R kunnen we objecten maken met meerdere elementen. Hier behandelen we <code>vectoren</code> en <code>data.frames</code>:</li>
+<li>De vorige objecten bevatten één element</li>
+<li>In R kunnen we ook objecten maken met meerdere elementen. Hier behandelen we <code>vectoren</code> en <code>data.frames</code></li>
 </ul>
+<div class="codewindow r" data-chrome="windows">
+<p>code.R</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a aria-label="1"></a>productie <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">30</span>,<span class="dv">30</span>,<span class="dv">40</span>,<span class="dv">50</span>)</span>
-<span id="cb10-2"><a aria-label="2"></a>productie</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a aria-label="1"></a>productie <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>)</span>
+<span id="cb23-2"><a aria-label="2"></a>productie</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 30 30 40 50</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a aria-label="1"></a>dieren <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'dier1'</span>,<span class="st">'dier2'</span>,<span class="st">'dier3'</span>,<span class="st">'dier4'</span>)</span>
-<span id="cb12-2"><a aria-label="2"></a>dieren</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a aria-label="1"></a>dieren <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'dier1'</span>, <span class="st">'dier2'</span>, <span class="st">'dier3'</span>, <span class="st">'dier4'</span>)</span>
+<span id="cb25-2"><a aria-label="2"></a>dieren</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "dier1" "dier2" "dier3" "dier4"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a aria-label="1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">dieren =</span> dieren,<span class="at">productie =</span> productie)</span>
-<span id="cb14-2"><a aria-label="2"></a>df1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a aria-label="1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">dieren =</span> dieren, <span class="at">productie =</span> productie)</span>
+<span id="cb27-2"><a aria-label="2"></a>df1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  dieren productie
 1  dier1        30
@@ -294,56 +346,304 @@
 3  dier3        40
 4  dier4        50</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a aria-label="1"></a>df1[<span class="dv">1</span>,<span class="dv">1</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a aria-label="1"></a>df1[<span class="dv">1</span>, <span class="dv">1</span>]           <span class="co"># rij 1, kolom 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "dier1"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a aria-label="1"></a>df1<span class="sc">$</span>productie</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a aria-label="1"></a>df1<span class="sc">$</span>productie       <span class="co"># een hele kolom</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 30 30 40 50</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a aria-label="1"></a>df1<span class="sc">$</span>dier[<span class="dv">1</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a aria-label="1"></a>df1<span class="sc">$</span>dieren[<span class="dv">1</span>]       <span class="co"># eerste element van een kolom</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "dier1"</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="selecteren-uit-vectoren-en-data.frames" class="slide level2">
+<h2>Selecteren uit vectoren en data.frames</h2>
+<p>Met <code>[ ]</code> selecteer je elementen, op positie of met een voorwaarde. Dit gebruiken we later veel om data te filteren in Shiny.</p>
+<div class="codewindow r" data-chrome="windows">
+<p>code.R</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a aria-label="1"></a>productie[<span class="dv">2</span>]                    <span class="co"># tweede element</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 30</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a aria-label="1"></a>productie[productie <span class="sc">&gt;</span> <span class="dv">35</span>]       <span class="co"># elementen groter dan 35</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 40 50</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a aria-label="1"></a>df1[df1<span class="sc">$</span>productie <span class="sc">&gt;</span> <span class="dv">35</span>, ]       <span class="co"># rijen waar productie &gt; 35</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  dieren productie
+3  dier3        40
+4  dier4        50</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a aria-label="1"></a><span class="fu">nrow</span>(df1)                       <span class="co"># aantal rijen</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
 </div>
 </div>
 </section>
 <section id="functies-in-r" class="slide level2">
 <h2>Functies in R</h2>
-<p>In R worden operaties uitgevoerd met code, <code>operators</code> en <code>functies</code></p>
+<p>In R worden operaties uitgevoerd met <code>operators</code> (zoals <code>+</code> en <code>-</code>) en <code>functies</code> (zoals <code>sum()</code> en <code>mean()</code>). Je kunt ook zelf functies maken.</p>
+<div class="codewindow r" data-chrome="windows">
+<p>code.R</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a aria-label="1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span></span>
-<span id="cb22-2"><a aria-label="2"></a>b <span class="ot">&lt;-</span> a <span class="sc">-</span> <span class="dv">2</span></span>
-<span id="cb22-3"><a aria-label="3"></a></span>
-<span id="cb22-4"><a aria-label="4"></a>c <span class="ot">&lt;-</span> <span class="fu">sum</span>(a,b)</span>
-<span id="cb22-5"><a aria-label="5"></a>d <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">c</span>(a,b,c))</span>
-<span id="cb22-6"><a aria-label="6"></a></span>
-<span id="cb22-7"><a aria-label="7"></a>efunctie <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n =</span> <span class="dv">100</span>,<span class="at">min =</span> <span class="dv">0</span>,<span class="at">max =</span> <span class="dv">1</span>){</span>
-<span id="cb22-8"><a aria-label="8"></a>  rnum <span class="ot">&lt;-</span> <span class="fu">runif</span>(n,<span class="at">min =</span> min,<span class="at">max =</span> max)</span>
-<span id="cb22-9"><a aria-label="9"></a>  mn <span class="ot">&lt;-</span> <span class="fu">mean</span>(rnum)</span>
-<span id="cb22-10"><a aria-label="10"></a>  sd <span class="ot">&lt;-</span> <span class="fu">sd</span>(rnum)</span>
-<span id="cb22-11"><a aria-label="11"></a>  <span class="fu">c</span>(mn,sd)</span>
-<span id="cb22-12"><a aria-label="12"></a>}</span>
-<span id="cb22-13"><a aria-label="13"></a><span class="fu">efunctie</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a aria-label="1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span></span>
+<span id="cb43-2"><a aria-label="2"></a>y <span class="ot">&lt;-</span> x <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb43-3"><a aria-label="3"></a></span>
+<span id="cb43-4"><a aria-label="4"></a>som <span class="ot">&lt;-</span> <span class="fu">sum</span>(x, y)</span>
+<span id="cb43-5"><a aria-label="5"></a>gem <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">c</span>(x, y, som))</span>
+<span id="cb43-6"><a aria-label="6"></a>gem</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4802918 0.2710953</code></pre>
+<pre><code>[1] 2.666667</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a aria-label="1"></a><span class="fu">efunctie</span>(<span class="dv">1000</span>,<span class="dv">0</span>,<span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a aria-label="1"></a><span class="co"># Zelf een functie maken</span></span>
+<span id="cb45-2"><a aria-label="2"></a>efunctie <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n =</span> <span class="dv">100</span>, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">1</span>){</span>
+<span id="cb45-3"><a aria-label="3"></a>  rnum <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="at">min =</span> min, <span class="at">max =</span> max)</span>
+<span id="cb45-4"><a aria-label="4"></a>  gemiddelde <span class="ot">&lt;-</span> <span class="fu">mean</span>(rnum)</span>
+<span id="cb45-5"><a aria-label="5"></a>  stdev <span class="ot">&lt;-</span> <span class="fu">sd</span>(rnum)</span>
+<span id="cb45-6"><a aria-label="6"></a>  <span class="fu">c</span>(<span class="at">gemiddelde =</span> gemiddelde, <span class="at">sd =</span> stdev)</span>
+<span id="cb45-7"><a aria-label="7"></a>}</span>
+<span id="cb45-8"><a aria-label="8"></a></span>
+<span id="cb45-9"><a aria-label="9"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)   <span class="co"># zorgt dat iedereen dezelfde 'toevallige' getallen krijgt</span></span>
+<span id="cb45-10"><a aria-label="10"></a><span class="fu">efunctie</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 494.6627 288.6395</code></pre>
+<pre><code>gemiddelde         sd 
+ 0.4985590  0.2849953 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a aria-label="1"></a><span class="fu">efunctie</span>(<span class="dv">1000</span>, <span class="dv">0</span>, <span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>gemiddelde         sd 
+  495.3345   285.4083 </code></pre>
 </div>
 </div>
+</div>
+</section>
+<section id="hulp-vragen" class="slide level2">
+<h2>Hulp vragen</h2>
+<p>Weet je niet hoe een functie werkt? Vraag de helppagina op:</p>
+<div class="codewindow r" data-chrome="windows">
+<p>code.R</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a aria-label="1"></a>?mean</span>
+<span id="cb49-2"><a aria-label="2"></a><span class="fu">help</span>(mean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p>De helppagina verschijnt in RStudio rechtsonder, in het tabblad <em>Help</em>.</p>
+</section>
+<section id="packages" class="slide level2">
+<h2>Packages</h2>
+<p>R wordt uitgebreid met <em>packages</em>. Een package installeer je één keer, en laad je in elke sessie waarin je het gebruikt:</p>
+<div class="codewindow r" data-chrome="windows">
+<p>code.R</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a aria-label="1"></a><span class="fu">install.packages</span>(<span class="st">"shiny"</span>)   <span class="co"># één keer: package installeren</span></span>
+<span id="cb50-2"><a aria-label="2"></a><span class="fu">library</span>(shiny)              <span class="co"># elke sessie: package laden</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p>In deze workshop gebruiken we onder andere het package <code>shiny</code>.</p>
 </section>
 <section id="opdrachten" class="slide level2 scrollable">
 <h2>Opdrachten</h2>
 <ol type="1">
 <li>Maak object <code>lft</code> met je leeftijd</li>
 <li>Maak object <code>naam</code> met je naam en <code>achternaam</code> met je achternaam</li>
-<li>Bereken hoeveel maanden (of dagen!!) je hebt geleefd</li>
+<li>Bereken hoeveel maanden (of dagen!!) je hebt geleefd
+<ul>
+<li><em>Tip:</em> <code>Sys.Date()</code> geeft de datum van vandaag, <code>as.Date("1980-05-17")</code> maakt een datum</li>
+</ul></li>
 <li>Maak een vector met namen, <code>namen</code></li>
 <li>Maak er ook een met (geschatte) leeftijden, <code>lfts</code></li>
-<li>Maak <code>data.frame</code> <code>mensen</code> met twee kolommen, <code>namen</code> en <code>leeftijden</code></li>
+<li>Maak <code>data.frame</code> <code>mensen</code> met twee kolommen, <code>namen</code> en <code>leeftijden</code>
+<ul>
+<li><em>Tip:</em> de kolomnaam mag anders zijn dan de naam van de vector: <code>leeftijden = lfts</code></li>
+</ul></li>
+<li>Wie in <code>mensen</code> is ouder dan 30?</li>
 </ol>
+</section>
+<section id="uitwerkingen" class="slide level2">
+<h2>Uitwerkingen</h2>
+<div class="password-protected-container" id="password-content-1">
+  <div class="password-prompt">
+    <div class="password-box">
+      <h4>🔒 Uitwerking vergrendeld</h4>
+      <div class="password-input-group">
+        <input type="text" id="password-content-1-input" class="password-input" placeholder="Wachtwoord" maxlength="5" style="text-transform: uppercase;">
+        <button onclick="unlockContent_1()" class="password-submit">Openen</button>
+      </div>
+      <div id="password-content-1-error" class="password-error" style="display: none;">
+        ❌ Onjuist wachtwoord. Probeer het opnieuw.
+      </div>
+    </div>
+  </div>
+  <div id="password-content-1-content" class="password-protected-content" style="display: none;">
+    <!-- Content will be decrypted and inserted here -->
+  </div>
+</div>
+
+<script>
+(function() {
+  const encryptedData_1 = '6d710529283e67747d222423353e647b06637f732b272a21647a70637e046d720768720b262f3b647a722521203b31637e056d70743e2e3d3025280227262368737a67747d282c677509647a70252f706d707468720d67750e313a27637d002b2e273e326d710268737a312938332b270522252d67747d336d70762e24242e6b2e2e2c27637f736d710368720b212929246d70762e2d29313568720c67747f322737342e240b2d2228647a723468737a677508647b01353d202667747d282c677509647a70252f706573637f736d710368720b23637f712030232b647b06637f736d70752e23796f7768737a67747d203a2b276029212622282f6d710268737a363438246d707468737836272f2826262335647b06637f736573637f736d710368720b67740b206d710321273c67747d647b01353d202667747d222423353e647b06637f732736637f736d710368737e2e3268720a6f637e026d70003e31292c637e046d707668720b31362c2f6d70762e2d29313568720c67747f253e67747f647b077278647b01637f073b322723647b07637e026d70003e31292c637e046d720768720b31362c2f6d707624256d710268737a21247c6c7a67747f647b07637e022967747d293a272068720c67747f647a71252f706570637f736d70762c3321236b25282c262323647b06637f733c303328647a70637f713c2324242f2c273e68720c67747f6c7967747f647b07637e026d70002c647b07282c202567747d647b01353d202667747d222423353e647b06637f732736637f736d710368737e2e3268720a6f637e026d70003e31292c637e046d707668720b31362c2f6d70762e2d29313568720c67747f323c67747f647b07637f776d70757e786d710407202667747b647a717574647b00637e026d70003e31292c637e046d710568730e31362c2f6d710368710967750e323823286873782b2268720c67747f222a736b7e647a70637e046d71052c647a722e3f242e677509647a70637f722b207760726d707468737823342420652a2f29252d2c637e056d707439333d27637f736d707639202a2b28292430677509647a706b7c647a70637e046d710568730e23637e0429212e39243a2c272c2c6d707668720b31362c2f6d70762e2d29313568720c67747f2e3c67747f647b07637f772436637e036567750e647a04353d2026677508647a72637e023b322723647a722521203b31637e056d70743e356d707468720d67747b647a717574647b000c2c2f3b272868737e67747e727167750f647b01637f073b322723647b07637e026d70003e31292c637e046d720768720b31362c2f6d707624256d710268737a21247c6c7c67747f647b07637e022967747d293a272068720c67747f647a71252f706576637f736d70762c3321236b25282c262323647b06637f733c303328647a70637f713c2324242f2c273e68720c67747f6c7967747f647b07637e026d70002c647b07637e026d70003e31292c637e046d720768720b31362c2f6d707624256d710268737a21247c6c7d67747f647b07637e022967747d293a272068720c67747f647a71252f706577637f736d70762c3321236b25282c262323647b06637f733c303328647a70637f713c2324242f2c273e68720c67747f6c7967747f647b07637e026d70002c647b072a2b356d707668720b31362c2f6d70762e2d29313568720c67747f322b67747f647b07637f006d710568730e31362c2f6d710368737867750e32382328687378212a2c323b677509647a70223b647a70637e047970637e026d70003e31292c637e046d707668737867747d647a72637f716d707668737867747d647a72637f716d707668737867747d647a72637f716d707668737867747d647a72637f716d707668737867747d647a72637f716d707668737867747d647a72637f716d707668737867747d647a72637f716d707668737867747d647a72637f716d707668737867747d647b01353d202667747d222423353e647b06637f732b2d637f736d710368737b67747d2c29232829242667740e647a722923262d342328336d710568730e31362c2f6d710368720b67740b3238232868720d67750e647a042522252d677508647b01637f0738302368720d67750e647a042224376d710368710967750e252134637f712b2e273e326d710268737a2123212d652d3339313d36637f712b272a216c2737323d343c6f35392527373268737a677508647803637e0238302368720d67750e2227262368720d67730f706d770268737877727d647b01637f072b2d2228647b07637e026d70003d332d677508647803637e026d700029283e677508647803637e022c2b30687378212a2c323b677509647a703522343a21230e2e2c27637f736d707624256d710268737a21247e647a70637e046d71053d332d67760c222423353e647b06637f733b2d333f222d012929246d70763f647a7225282d246f2522252d67747f647b07637e022b2d2228647a722521203b31637e056d70743e2e3d3025280227262368737830637f736d710368720b31362c2f6d707624256d710268737a21247e6c7967747f647b07637e022967747d293a272068720c67747f647a71252f726573637f736d70762c3321236b25282c262323647b06637f733c303328647a70637f713c2324242f2c273e68720c67747f6c7967747f647b07637e026d70002c647b07637e023b322723647a722521203b31637e056d70742b346d707468720d2335632f3d2f233f282b67750e647a04353d2026677508647a7a637e023b322723647a722521203b31637e056d70742b346d707468720d113f3e6f0c233228647b01637f073b322723647b07637f796d707f68737867750e32382328687378212a2c323b677509647a70352e647a70637e046567750e647a04353d2026677508647a72637e023b322723647a722521203b31637e056d70742b346d707468720d2335630529362368720b67740b3238232868720d677475647b01353d202667747d222423353e647b06637f733b36637f736d710368737e333322356d71047c7870726b7d7465737168737e333322356d710468720b67740b3238232868720d677474647a7b637f716d707668737867747d647a72637e023b322723647a722521203b31637e056d70742e2e6d707468720d67747e647a72222c262d2c637e026d70003e31292c637e046d710568730e31362c2f6d710368720b67740b2227262368720d67750e647a04363f246d710368720b67740b252134637e046d720768720b262f3b647a722521203b31637e056d70742e24242e6b22343c323339647a7225282d246f29383538373260323c262938356d707468720d67760c647b01363f246d710368720b212929246d710368740a736378056d70767c7771717468720b67740b2227262368720d67750e647a04363f246d710368710967750e647a042224376d710368710967750e252134637f712b2e273e326d710268737a312938332b270522252d67747f647a722f29647b06637f732b207368737a677508647b01363f246d72072e2d29313568720c67747f322737342e240b2d2228647a72346873782123212d65212929246d707468720d67750e22272623687378212a2c323b677509647a703522343a21230e2e2c27637f713a67747f647b07637e023b322723647a722f29647b06637f732b207360706d707468720d67750e206d707625332d24637e056d707468737b2124786c7967747f647a72273f28296f2e24252c272868720c67747f353a372368737a67747d3529202f23252d3a637e056d707460706d707468720d67750e647a042768720d2c2720242667747d647b01353d202667747d222423353e647b06637f732736637f736d710368737e2e3268720a6f637e026d70003e31292c637e046d707668720b31362c2f6d70762e2d29313568720c67747f273d67747f647b072568720b67740b3238232868720d677475647b01353d202667747d222423353e647b06637f733b36637f736d710368737e67747e727167750f00262c2768737e67747e727167750f647b01637f073b322723647b07637f026d707668720b31362c2f6d70762e2d29313568720c67747f323c67747f647b07637f776d70757e786d71041d282d36637f776d70757e786d710468720b67740b3238232868720d67740e647a72637e023b322723647a722521203b31637e056d70743e356d707468720d67747b647a717574647b000d28243b67747b647a717574647b00637e026d70003e31292c637e046d707f68720b67740b3238232868720d67760c647b01353d202667747d282c677509647a70252f746570637f736d710368720b23637f712030232b647b06637f736d70752e237d6f7468737a67747d203a2b276029212622282f6d710268737a363438246d707468737836272f2826262335647b06637f736573637f736d710368720b67740b206d710321273c31637f716d71053e31292c637f712b2e273e326d710268737a2d3268737a677508647a742a39647b006b68720b67740b3238232868720d67747d647b01353d202667747d222423353e647b06637f732e37637f736d71032e647b01637f073b322723647b07637f796d71053e31292c637f712b2e273e326d710268737a263068737a677508737d67750e647a04353d2026677508647a01637f716d71053e31292c637f712b2e273e326d710268737a263068737a677508727c67750e647a04353d2026677508647a01637f716d71053e31292c637f712b2e273e326d710268737a263068737a677508747a67750e647a04353d2026677508647a7b637e026d70003e31292c637e046d720768720b31362c2f6d707624256d710268737a2124786c7b67747f647b07637e022967747d293a272068720c67747f647a71252f746571637f736d70762c3321236b25282c262323647b06637f733c303328647a70637f713c2324242f2c273e68720c67747f6c7967747f647b07637e026d70002c647b072b282f3b272868737867750e32382328687378212a2c323b677509647a702939647a70637e046d707021356d710460647b01637f073b322723647b07637f716d71053e31292c637f712b2e273e326d710268737a243368737a6775082529362763273a232b28647b01637f073b322723647b07637f796d71053e31292c637f712b2e273e326d710268737a233268737a6775082f292f2323647a72637e056d710568730e31362c2f6d71036873782c2720242667740e647a72637e023b322723647a722521203b31637e056d70742c356d707468720d2e2328273c2b2c29242667747d647b06637e026d70003e31292c637e046d707621273c31637f786d710568730e31362c2f6d710368710967750e323823286873782b2268720c67747f222a776b79647a70637e046d71052c647a722e3f242e677509647a70637f722b207360756d707468737823342420652a2f29252d2c637e056d707439333d27637f736d707639202a2b28292430677509647a706b7c647a70637e046d710568730e23637e042527283e242667750e647a04353d2026677508647b01637f072b2d2228647b07637e026d70003d332d677508647b01637f072c2b3068720d67760c647b012224376d70762e2d29313568720c67747f222d2e2a602e3d363638356d70762e24242e6b22343c3233396c3b362222343c67747f647b07637d006d71053d332d677508647b012522252d677508647a72637f7126232b282f6d707621242d2432242b2c272868710973637f716d70760c2f2623637f716d707668737867747d647a72637f716d707668737867747d737d67760c736d7076687378122f28356d707668737867747d647a72637f716d707668737867747d647a7275796478037568737867747d0a2d273568737867747d647a72637f716d707668737867747d647a72637f717d70637e026d70002e2e2c27637e046d710568730e323428647b07637d006d710568730e262f3b647b07637d006d710529283e67747d222423353e647b06637f733b2d333f222d012929246d70746873782b2268720c67747f222a75637f736d710368720b3234286478032521203b31637e056d70743e2e3d3025280227262368737830637f712b272a216c2b2d2228647a70637e046d71052e2e2c27637f712b2e273e326d710268737a312938332b270522252d67747d336d707468720d67750e323823286873782b2268720c67747f222a756b7c647a70637e046d71052c647a722e3f242e677509647a70637f722b207160706d707468737823342420652a2f29252d2c637e056d707439333d27637f736d707639202a2b28292430677509647a706b7c647a70637e046d710568730e23637e042527283e242667730f2c2d2c35282f6d71053e31292c637f712b2e273e326d710268737a312568737a677508647a76637e026d70003e31292c637e042427232b35212822282f6d707668720b31362c2f6d70762e2d29313568720c67747f322b67747f647b07637f772f36637e036d710568730e31362c2f6d710368737867750e32382328687378212a2c323b677509647a70223b647a70637e047b72637e026d70003e31292c637e046d7005687378677309647b01637f073b322723647b07637e026d70002e2e2c27637e046d710568730e323428647b07637e026d700029283e677508647803637e022c2b30687378212a2c323b677509647a7025282d246f2938353837326873782123212d652d3339313d366b3e352c2d3339647a70637e046d720768720b323428647b07637e022b2d2228647b07637f716d707623202527286873782e2328273c2b2c29242667760c736d7076687378122f28356d707668737867747d647a72637f716d707668737867747d647a7275796478037568737867747d0a2d273568737867747d647a72637f716d707668737867747d647a72637f717d70637e026d70002e2e2c27637e046d710568730e323428647b07637d006d710568730e262f3b647b07637d006d710568730e262f3b647b07';
+  const passwordHash_1 = 'd3b4963';
+  
+  function hashPassword(password) {
+    let hash = 5381;
+    for (let i = 0; i < password.length; i++) {
+      hash = ((hash * 33) + password.charCodeAt(i)) >>> 0;
+    }
+    return hash.toString(16);
+  }
+  
+  function xorDecrypt(hexStr, password) {
+    let decrypted = '';
+    const keyLen = password.length;
+    
+    for (let i = 0; i < hexStr.length; i += 2) {
+      const charCode = parseInt(hexStr.substr(i, 2), 16);
+      const keyCode = password.charCodeAt((i / 2) % keyLen);
+      decrypted += String.fromCharCode(charCode ^ keyCode);
+    }
+    
+    // URL decode to restore UTF-8 characters
+    return decodeURIComponent(decrypted);
+  }
+  
+  window.unlockContent_1 = function() {
+    const input = document.getElementById('password-content-1-input');
+    const password = input.value.toUpperCase().trim();
+    const errorDiv = document.getElementById('password-content-1-error');
+    
+    if (hashPassword(password) === passwordHash_1) {
+      // Decrypt and show content
+      const decrypted = xorDecrypt(encryptedData_1, password);
+      document.getElementById('password-content-1-content').innerHTML = decrypted;
+      document.getElementById('password-content-1-content').style.display = 'block';
+      document.querySelector('#password-content-1 .password-prompt').style.display = 'none';
+      errorDiv.style.display = 'none';
+      
+      // Store password for this session
+      sessionStorage.setItem('password-content-1-password', password);
+    } else {
+      errorDiv.style.display = 'block';
+      input.value = '';
+      input.focus();
+    }
+  };
+  
+  // Check if already unlocked in this session
+  const savedPassword = sessionStorage.getItem('password-content-1-password');
+  if (savedPassword && hashPassword(savedPassword) === passwordHash_1) {
+    const decrypted = xorDecrypt(encryptedData_1, savedPassword);
+    document.getElementById('password-content-1-content').innerHTML = decrypted;
+    document.getElementById('password-content-1-content').style.display = 'block';
+    document.querySelector('#password-content-1 .password-prompt').style.display = 'none';
+  }
+  
+  // Allow Enter key to submit
+  document.getElementById('password-content-1-input').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      unlockContent_1();
+    }
+  });
+})();
+</script>
+
+<style>
+.password-protected-container {
+  margin: 1.5em 0;
+}
+
+.password-prompt {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.password-box {
+  background: #f8f9fa;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  padding: 2em;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+.password-box h4 {
+  margin-top: 0;
+  color: #495057;
+}
+
+.password-box p {
+  color: #6c757d;
+  margin-bottom: 1.5em;
+}
+
+.password-input-group {
+  display: flex;
+  gap: 0.5em;
+  margin-bottom: 1em;
+}
+
+.password-input {
+  flex: 1;
+  padding: 0.75em;
+  border: 2px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1.1em;
+  font-family: monospace;
+  text-align: center;
+  letter-spacing: normal;
+}
+
+.password-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.password-submit {
+  padding: 0.75em 1.5em;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.password-submit:hover {
+  background-color: #0056b3;
+}
+
+.password-submit:active {
+  background-color: #004085;
+}
+
+.password-error {
+  color: #dc3545;
+  font-weight: 600;
+  margin-top: 0.5em;
+}
+
+.password-protected-content {
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+</style>
+
 
 
 </section>
@@ -383,7 +683,7 @@
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"},{"title":"Cursuswebsite","icon":"<span style=\"font-size: 1.6em;\">🏠</span>","content":"<p style=\"padding: 1em;\"><a href=\"../index.html\">Terug naar de cursuswebsite</a></p>"}],"openButton":true},
 'smaller': false,
  
         // Display controls in the bottom right corner

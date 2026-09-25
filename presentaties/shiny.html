@@ -9,8 +9,7 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.10.18">
 
-  <meta name="author" content="Albart Coster">
-  <title>R-shiny workshop – R Basis</title>
+  <title>R-shiny workshop – Bouwen van R-Shiny App</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -34,11 +33,78 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-69867d1cfc68591aaf274bc2c0541ab3.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-codewindow/codewindow.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
@@ -51,6 +117,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -133,36 +200,98 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">R Basis</h1>
+  <h1 class="title">Bouwen van R-Shiny App</h1>
 
 <div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Albart Coster
-</div>
-</div>
 </div>
 
 </section>
-<section id="quarto" class="slide level2">
-<h2>Quarto</h2>
-<p>Quarto enables you to weave together content and executable code into a finished presentation. To learn more about Quarto presentations see <a href="https://quarto.org/docs/presentations/" class="uri">https://quarto.org/docs/presentations/</a>.</p>
-</section>
-<section id="bullets" class="slide level2">
-<h2>Bullets</h2>
-<p>When you click the <strong>Render</strong> button a document will be generated that includes:</p>
-<ul>
-<li>Content authored with markdown</li>
-<li>Output from executable code</li>
-</ul>
-</section>
-<section id="code" class="slide level2">
-<h2>Code</h2>
-<p>When you click the <strong>Render</strong> button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:</p>
+<section id="shiny" class="slide level2">
+<h2>Shiny</h2>
+<p><a href="https://shiny.posit.co/r/getstarted/shiny-basics/lesson1/">Shiny</a> is een pakket om interactieve webtoepassingen te maken met R.</p>
+<p>We installeren het <code>shiny</code> pakket met de volgende opdracht:</p>
+<div class="codewindow r" data-chrome="windows">
+<p>code.R</p>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a><span class="fu">install.packages</span>(<span class="st">'shiny'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</div>
+<p>Het <code>shiny</code> pakket bevat 11 werkende voorbeelden. We kunnen een voorbeeld uitvoeren:</p>
+<div class="codewindow r" data-chrome="windows">
+<p>code.R</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a aria-label="1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb2-2"><a aria-label="2"></a><span class="fu">runExample</span>(<span class="st">"01_hello"</span>, <span class="at">display.mode =</span> <span class="st">"showcase"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="stap-1.-opzet-van-het-project" class="slide level2 scrollable">
+<h2>Stap 1. Opzet van het project</h2>
+<ol type="1">
+<li>Maak een nieuwe project in een nieuwe map, bijvoorbeeld <code>wsapp</code></li>
+<li>Maak in deze map een bronbetand genaamd <code>app.R</code></li>
+<li>Open dat bestand je editor, werk in dat bestand</li>
+</ol>
+</section>
+<section id="stap-2.-opzet-van-de-app" class="slide level2 scrollable">
+<h2>Stap 2. Opzet van de App</h2>
+<ol type="1">
+<li>Laad pakketten <code>shiny</code> en <code>bslib</code> in je app. Installeer ze als je ze nog niet geïnstalleerd hebt.</li>
+<li>Schrijf de basisstructuur voor een app. Een app heeft een <code>ui</code> object, <em>user interface</em> en een <code>server</code> functie. Functie shinyApp(ui,server) maakt een shiny App van het paar <code>ui</code> en <code>server</code></li>
+</ol>
+<div class="codewindow r" data-chrome="windows">
+<p>code.R</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-label="1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb3-2"><a aria-label="2"></a><span class="fu">library</span>(bslib)</span>
+<span id="cb3-3"><a aria-label="3"></a></span>
+<span id="cb3-4"><a aria-label="4"></a>ui <span class="ot">=</span> <span class="fu">page_navbar</span>(</span>
+<span id="cb3-5"><a aria-label="5"></a>  <span class="at">title =</span> <span class="st">'Analyse productiedata'</span></span>
+<span id="cb3-6"><a aria-label="6"></a>)</span>
+<span id="cb3-7"><a aria-label="7"></a></span>
+<span id="cb3-8"><a aria-label="8"></a>server <span class="ot">=</span> <span class="cf">function</span>(input, output,session) {}</span>
+<span id="cb3-9"><a aria-label="9"></a></span>
+<span id="cb3-10"><a aria-label="10"></a><span class="fu">shinyApp</span>(ui,server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="stap-3.-laden-van-de-data" class="slide level2 scrollable">
+<h2>Stap 3. Laden van de data</h2>
+<ol type="1">
+<li>We werken met het bestand <a href="https://github.com/costerAnalytics/wsappproductie/blob/main/data/productiedata.dat"><code>productiedata.dat</code></a>. Maak een map <code>data</code> in je mappenstruktuur en plaats het bestand daarin</li>
+<li>Lees het bestand in en zorg dat alles goed staat</li>
+<li>We lezen het bestand buiten de shiny code in, dus helemaal bovenaan het <code>app.R</code> bestand</li>
+<li>Om de gegevens goed te krijgen doen we een paar bewerkingen met functies uit het <code>dplyr</code> pakket. We laden dit dus ook</li>
+<li>Opmerking; neem even tijd om het originele <code>productiedata.dat</code> bestand te bekijken, en kijk ook hoe het <code>data</code> object er vervolgens uitziet. Gebruik bijvoorbeeld de opdracht <code>summary(data)</code> in de console</li>
+</ol>
+<div class="codewindow r" data-chrome="windows">
+<p>code.R</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a aria-label="1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb4-2"><a aria-label="2"></a><span class="fu">library</span>(bslib)</span>
+<span id="cb4-3"><a aria-label="3"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb4-4"><a aria-label="4"></a></span>
+<span id="cb4-5"><a aria-label="5"></a>data <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">'data/productiedata.dat'</span>,</span>
+<span id="cb4-6"><a aria-label="6"></a>                   <span class="at">sep =</span> <span class="st">","</span>,</span>
+<span id="cb4-7"><a aria-label="7"></a>                   <span class="at">dec =</span> <span class="st">"."</span>,</span>
+<span id="cb4-8"><a aria-label="8"></a>                   <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-9"><a aria-label="9"></a>                   <span class="at">row.names =</span> <span class="dv">1</span>, <span class="do">## eerste kolom is een rijnummer</span></span>
+<span id="cb4-10"><a aria-label="10"></a>                   <span class="at">na.strings =</span> <span class="st">"NA"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-11"><a aria-label="11"></a>  <span class="fu">rename</span>(<span class="at">vreettijd =</span> <span class="dv">15</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-12"><a aria-label="12"></a>  <span class="fu">rename_with</span>(tolower) <span class="sc">|&gt;</span> </span>
+<span id="cb4-13"><a aria-label="13"></a>  <span class="fu">mutate</span>(<span class="at">datum =</span> <span class="fu">parse_date_time</span>(datum, <span class="at">orders =</span> <span class="st">"%Y-%m-%d"</span>)) <span class="sc">|&gt;</span> <span class="do">## zorg dat datum goed staat</span></span>
+<span id="cb4-14"><a aria-label="14"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">factor</span>(id)) <span class="do">## id moet een factor zijn</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="stap-4.-eerste-grafiek" class="slide level2 scrollable">
+<h2>Stap 4. Eerste grafiek</h2>
+<ol type="1">
+<li>We maken een grafiek van de gemiddelde melkproductie per dag met functies uit het <code>ggplot2</code>. Dit moet in de <code>server</code> functie gebeuren</li>
+<li>We zorgen ervoor dat de grafiek in de app te zien is. Dit gebeurt in het <code>ui</code> object</li>
+</ol>
+<div class="codewindow r" data-chrome="windows">
+<p>code.R</p>
 </div>
 
 
@@ -181,6 +310,7 @@ Albart Coster
   <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-codewindow/codewindow.js"></script>
   <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -202,7 +332,7 @@ Albart Coster
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"},{"title":"Cursuswebsite","icon":"<span style=\"font-size: 1.6em;\">🏠</span>","content":"<p style=\"padding: 1em;\"><a href=\"../index.html\">Terug naar de cursuswebsite</a></p>"}],"openButton":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -373,7 +503,7 @@ Albart Coster
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealCodewindow, QuartoSupport,
 
           RevealMath,
           RevealNotes,
